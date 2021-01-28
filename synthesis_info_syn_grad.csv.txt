@@ -1,0 +1,33 @@
+Date saved: 28 Jan 2021, 12:46 
+Data frame with original data: no_major 
+Number of synthetic data sets: 1 
+Output file(s):(csv) syn_grad.csv.csv
+Additional file: synobject_syn_grad.csv.RData
+Methods used:
+              pidm               year               term 
+          "sample"             "cart"             "cart" 
+           college      total_credits                 ge 
+            "cart"             "cart"             "cart" 
+            ge_fte           ge_teach       ge_teach_fte 
+            "cart"             "cart"             "cart" 
+           ge_rsch        ge_rsch_fte           ge_admin 
+            "cart"             "cart"             "cart" 
+      ge_admin_fte         ge_general     ge_general_fte 
+            "cart"             "cart"             "cart" 
+      ge_gen_teach   ge_gen_teach_fte        ge_gen_rsch 
+            "cart"             "cart"             "cart" 
+   ge_gen_rsch_fte       ge_gen_admin   ge_gen_admin_fte 
+            "cart"             "cart"             "cart" 
+    ge_rsch_funded ge_rsch_funded_fte          dept_fund 
+        "constant"         "constant"             "cart" 
+     dept_fund_fte            support          remission 
+            "cart"             "cart"             "cart" 
+              loan         work_study                fyf 
+            "cart"         "constant"             "cart" 
+               nsf            raymund              lokey 
+            "cart"             "cart"             "cart" 
+        grantschol     general_funded           nsf_diss 
+            "cart"             "cart"             "cart" 
+         sort_term      student_level 
+            "cart"             "cart" 
+Seed used: 361259481 

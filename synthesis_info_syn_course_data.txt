@@ -1,0 +1,19 @@
+Date saved: 28 Jan 2021, 14:33 
+Data frame with original data: tab_syn 
+Number of synthetic data sets: 1 
+Output file(s):(csv) syn_course_data.csv
+Additional file: synobject_syn_course_data.RData
+Methods used:
+        academic_year           fiscal_year             sort_term                  term 
+             "sample"                "cart"                "cart"                "cart" 
+                  crn                  type              location           credit_type 
+               "cart"                "cart"                "cart"                "cart" 
+        student_level          course_level        course_college        same_dept_flag 
+               "cart"                "cart"                "cart"                "cart" 
+    same_college_flag same_college_flag_cas   course_level_detail  student_level_detail 
+               "cart"                "cart"                "cart"                "cart" 
+               credit                   fte             headcount                  year 
+               "cart"                "cart"                "cart"                "cart" 
+              college     course_number_cat 
+               "cart"                "cart" 
+Seed used: 361259481 
