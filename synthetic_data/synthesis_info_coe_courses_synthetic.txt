@@ -1,0 +1,19 @@
+Date saved: 04 Feb 2021, 16:21 
+Data frame with original data: coe_courses 
+Number of synthetic data sets: 1 
+Output file(s):(csv) coe_courses_synthetic.csv
+Additional file: synobject_coe_courses_synthetic.RData
+Methods used:
+        academic_year           fiscal_year             sort_term                  term 
+             "sample"                "cart"                "cart"                "cart" 
+                  crn                  type              location       credit_sub_abbr 
+               "cart"                "cart"                "cart"                "cart" 
+          credit_type         student_level          course_level        same_dept_flag 
+               "cart"                "cart"                "cart"                "cart" 
+    same_college_flag same_college_flag_cas   course_level_detail  student_level_detail 
+               "cart"           "collinear"                "cart"                "cart" 
+               credit                   fte             headcount                  year 
+               "cart"                "cart"                "cart"                "cart" 
+    course_number_cat            department 
+               "cart"                "cart" 
+Seed used: 920788479 
