@@ -1,17 +1,13 @@
-Date saved: 04 Feb 2021, 16:27 
+Date saved: 06 Feb 2021, 20:10 
 Data frame with original data: law_courses 
 Number of synthetic data sets: 1 
-Output file(s):(csv) law_courses_synthetic.csv
-Additional file: synobject_law_courses_synthetic.RData
+Output file(s):(csv) Law_courses_synthetic.csv
+Additional file: synobject_Law_courses_synthetic.RData
 Methods used:
-        academic_year           fiscal_year             sort_term                  term                   crn 
-             "sample"                "cart"                "cart"                "cart"                "cart" 
-                 type              location           credit_type         student_level          course_level 
-               "cart"                "cart"                "cart"                "cart"                "cart" 
-       same_dept_flag     same_college_flag same_college_flag_cas   course_level_detail  student_level_detail 
-               "cart"                "cart"           "collinear"                "cart"                "cart" 
-               credit                   fte             headcount                  year     course_number_cat 
-               "cart"                "cart"                "cart"                "cart"                "cart" 
-           department 
-               "cart" 
-Seed used: 597081150 
+        academic_year           fiscal_year             sort_term                  term                   crn                  type              location        credit_subject           credit_type 
+             "sample"                "cart"                "cart"                "cart"                "cart"                "cart"                "cart"                "cart"                "cart" 
+        student_level          course_level        same_dept_flag     same_college_flag same_college_flag_cas   course_level_detail  student_level_detail                credit                   fte 
+               "cart"                "cart"                "cart"                "cart"           "collinear"                "cart"                "cart"                "cart"                "cart" 
+            headcount                  year     course_number_cat            department 
+               "cart"                "cart"                "cart"           "collinear" 
+Seed used: 691462838 

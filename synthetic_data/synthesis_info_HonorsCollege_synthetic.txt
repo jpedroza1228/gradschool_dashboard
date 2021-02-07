@@ -1,0 +1,13 @@
+Date saved: 06 Feb 2021, 20:09 
+Data frame with original data: honors_courses 
+Number of synthetic data sets: 1 
+Output file(s):(csv) HonorsCollege_synthetic.csv
+Additional file: synobject_HonorsCollege_synthetic.RData
+Methods used:
+        academic_year           fiscal_year             sort_term                  term                   crn                  type              location       credit_sub_abbr        credit_subject 
+             "sample"                "cart"           "collinear"                "cart"                "cart"                "cart"                "cart"            "constant"            "constant" 
+          credit_type         student_level          course_level        same_dept_flag     same_college_flag same_college_flag_cas   course_level_detail  student_level_detail                credit 
+               "cart"                "cart"            "constant"                "cart"           "collinear"           "collinear"                "cart"                "cart"                "cart" 
+                  fte             headcount                  year     course_number_cat            department 
+               "cart"                "cart"                "cart"                "cart"            "constant" 
+Seed used: 227463737 

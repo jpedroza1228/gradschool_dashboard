@@ -1,0 +1,13 @@
+Date saved: 06 Feb 2021, 19:59 
+Data frame with original data: cas1_10 
+Number of synthetic data sets: 1 
+Output file(s):(csv) cas31_40_fake_courses_synthetic.csv
+Additional file: synobject_cas31_40_fake_courses_synthetic.RData
+Methods used:
+        academic_year           fiscal_year             sort_term                  term                   crn                  type              location        credit_subject           credit_type 
+             "sample"                "cart"                "cart"                "cart"                "cart"                "cart"                "cart"                "cart"                "cart" 
+        student_level          course_level        same_dept_flag     same_college_flag same_college_flag_cas   course_level_detail  student_level_detail                credit                   fte 
+               "cart"                "cart"                "cart"                "cart"                "cart"                "cart"                "cart"                "cart"                "cart" 
+            headcount                  year     course_number_cat            department 
+               "cart"                "cart"                "cart"                "cart" 
+Seed used: 949484365 
