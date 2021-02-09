@@ -1,19 +1,19 @@
-Date saved: 04 Feb 2021, 15:20 
+Date saved: 08 Feb 2021, 17:05 
 Data frame with original data: law_sch 
 Number of synthetic data sets: 1 
-Output file(s):(csv) law_synthetic.csv
-Additional file: synobject_law_synthetic.RData
+Output file(s):(csv) Law_synthetic.csv
+Additional file: synobject_Law_synthetic.RData
 Methods used:
-              pidm               year               term      total_credits                 ge             ge_fte           ge_teach 
+              term      total_credits                 ge             ge_fte           ge_teach       ge_teach_fte            ge_rsch 
           "sample"             "cart"             "cart"             "cart"             "cart"             "cart"             "cart" 
-      ge_teach_fte            ge_rsch        ge_rsch_fte           ge_admin       ge_admin_fte         ge_general     ge_general_fte 
+       ge_rsch_fte           ge_admin       ge_admin_fte         ge_general     ge_general_fte       ge_gen_teach   ge_gen_teach_fte 
             "cart"             "cart"             "cart"             "cart"             "cart"             "cart"             "cart" 
-      ge_gen_teach   ge_gen_teach_fte        ge_gen_rsch    ge_gen_rsch_fte       ge_gen_admin   ge_gen_admin_fte     ge_rsch_funded 
-            "cart"             "cart"             "cart"        "collinear"             "cart"             "cart"         "constant" 
-ge_rsch_funded_fte          dept_fund      dept_fund_fte            support          remission               loan         work_study 
-        "constant"         "constant"         "constant"             "cart"             "cart"             "cart"         "constant" 
-               fyf                nsf            raymund              lokey         grantschol     general_funded           nsf_diss 
-        "constant"             "cart"         "constant"         "constant"             "cart"             "cart"         "constant" 
-         sort_term      student_level    department_full 
-            "cart"             "cart"         "constant" 
-Seed used: 997024447 
+       ge_gen_rsch    ge_gen_rsch_fte       ge_gen_admin   ge_gen_admin_fte     ge_rsch_funded ge_rsch_funded_fte          dept_fund 
+            "cart"        "collinear"             "cart"             "cart"         "constant"         "constant"         "constant" 
+     dept_fund_fte            support          remission               loan         work_study                fyf                nsf 
+        "constant"             "cart"             "cart"             "cart"         "constant"         "constant"             "cart" 
+           raymund              lokey         grantschol     general_funded           nsf_diss          sort_term      student_level 
+        "constant"         "constant"             "cart"             "cart"         "constant"             "cart"             "cart" 
+       course_dept 
+        "constant" 
+Seed used: 444071575 

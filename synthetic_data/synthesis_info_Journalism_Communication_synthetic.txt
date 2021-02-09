@@ -1,0 +1,23 @@
+Date saved: 08 Feb 2021, 17:09 
+Data frame with original data: sojc_sch 
+Number of synthetic data sets: 1 
+Output file(s):(csv) Journalism_Communication_synthetic.csv
+Additional file: synobject_Journalism_Communication_synthetic.RData
+Methods used:
+              term      total_credits                 ge             ge_fte           ge_teach 
+          "sample"             "cart"             "cart"             "cart"             "cart" 
+      ge_teach_fte            ge_rsch        ge_rsch_fte           ge_admin       ge_admin_fte 
+            "cart"             "cart"             "cart"             "cart"             "cart" 
+        ge_general     ge_general_fte       ge_gen_teach   ge_gen_teach_fte        ge_gen_rsch 
+            "cart"             "cart"             "cart"             "cart"             "cart" 
+   ge_gen_rsch_fte       ge_gen_admin   ge_gen_admin_fte     ge_rsch_funded ge_rsch_funded_fte 
+            "cart"        "collinear"             "cart"         "constant"         "constant" 
+         dept_fund      dept_fund_fte            support          remission               loan 
+        "constant"         "constant"             "cart"             "cart"             "cart" 
+        work_study                fyf                nsf            raymund              lokey 
+        "constant"             "cart"             "cart"             "cart"             "cart" 
+        grantschol     general_funded           nsf_diss          sort_term      student_level 
+            "cart"             "cart"         "constant"             "cart"             "cart" 
+       course_dept 
+        "constant" 
+Seed used: 654582537 
