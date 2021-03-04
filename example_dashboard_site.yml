@@ -1,0 +1,6 @@
+name: "Example Dashboard"
+navbar:
+  title: "Example Dashboard"
+  left:
+    - text: "Home"
+      href: index.html
