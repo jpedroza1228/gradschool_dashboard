@@ -1,0 +1,37 @@
+Date saved: 09 Mar 2021, 12:16 
+Data frame with original data: cas_sch2 
+Number of synthetic data sets: 1 
+Output file(s):(csv) Arts_Sciences_synthetic2.csv
+Additional file: synobject_Arts_Sciences_synthetic2.RData
+Methods used:
+                   X1                  term         total_credits                    ge 
+             "sample"                "cart"                "cart"                "cart" 
+               ge_fte              ge_teach          ge_teach_fte               ge_rsch 
+               "cart"                "cart"                "cart"                "cart" 
+          ge_rsch_fte              ge_admin          ge_admin_fte            ge_general 
+               "cart"                "cart"                "cart"                "cart" 
+       ge_general_fte          ge_gen_teach      ge_gen_teach_fte           ge_gen_rsch 
+               "cart"                "cart"                "cart"                "cart" 
+      ge_gen_rsch_fte          ge_gen_admin      ge_gen_admin_fte        ge_rsch_funded 
+               "cart"                "cart"                "cart"                "cart" 
+   ge_rsch_funded_fte             dept_fund         dept_fund_fte               support 
+           "constant"                "cart"                "cart"                "cart" 
+            remission                  loan            work_study                   fyf 
+               "cart"                "cart"           "collinear"                "cart" 
+                  nsf               raymund                 lokey            grantschol 
+               "cart"                "cart"           "collinear"                "cart" 
+       general_funded              nsf_diss                  year              term_num 
+               "cart"                "cart"            "constant"                "cart" 
+        student_level           course_dept                   crn         course_number 
+               "cart"                "cart"                "cart"                "cart" 
+                 type              location        credit_subject           credit_type 
+               "cart"                "cart"                "cart"                "cart" 
+         course_level        same_dept_flag     same_college_flag same_college_flag_cas 
+           "constant"                "cart"                "cart"                "cart" 
+  course_level_detail  student_level_detail                credit                   fte 
+               "cart"                "cart"                "cart"           "collinear" 
+            headcount     course_number_cat   credit_subject_full             full_term 
+               "cart"                "cart"                "cart"           "collinear" 
+     credit_per_class   credit_per_full_num 
+               "cart"                "cart" 
+Seed used: 480487232 
