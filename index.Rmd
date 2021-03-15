@@ -457,7 +457,7 @@ wide_lm_list <- uo %>%
          lm_r = map_dbl(lm_r2, ~sqrt(.x)))
 
 wide_lm_list %>% 
-  dplyr::select(college, course_dept, betas, lm_pvalue) %>% 
+  dplyr::select(college, course_dept, ge_teach_fte_b, betas, lm_pvalue) %>% 
   rename(`College` = college,
          `Course Department` = course_dept) %>% 
   mutate(
