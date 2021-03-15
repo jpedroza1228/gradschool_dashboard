@@ -16,29 +16,28 @@ library(reactable)
 
 theme_set(theme_classic())
 
-colleges_combined <- function(percent){
+colleges_combined <- function(){
   
-  cas <- readr::read_csv('https://media.githubusercontent.com/media/jpedroza1228/gradschool_dashboard/main/synthetic_data/synthetic_csv/Arts_Sciences_synthetic.csv') %>% 
-    mutate(college = 'College of Arts & Sciences') %>% 
-    dplyr::sample_frac(percent)
-  bus <- readr::read_csv('https://media.githubusercontent.com/media/jpedroza1228/gradschool_dashboard/main/synthetic_data/synthetic_csv/Business_synthetic.csv') %>% 
-    mutate(college = 'Lundquist College of Business') %>% 
-    dplyr::sample_frac(percent)
-  des <- readr::read_csv('https://media.githubusercontent.com/media/jpedroza1228/gradschool_dashboard/main/synthetic_data/synthetic_csv/Design_synthetic.csv') %>% 
-    mutate(college = 'College of Design') %>% 
-    dplyr::sample_frac(percent)
-  coe <- readr::read_csv('https://media.githubusercontent.com/media/jpedroza1228/gradschool_dashboard/main/synthetic_data/synthetic_csv/Education_synthetic.csv') %>% 
-    mutate(college = 'College of Education') %>% 
-    dplyr::sample_frac(percent)
-  sojc <- readr::read_csv('https://media.githubusercontent.com/media/jpedroza1228/gradschool_dashboard/main/synthetic_data/synthetic_csv/Journalism_Communication_synthetic.csv') %>% 
-    mutate(college = 'School of Journalism & Communication') %>% 
-    dplyr::sample_frac(percent)
-  law <- readr::read_csv('https://media.githubusercontent.com/media/jpedroza1228/gradschool_dashboard/main/synthetic_data/synthetic_csv/Law_synthetic.csv') %>% 
-    mutate(college = 'School of Law') %>% 
-    dplyr::sample_frac(percent)
-  mus <- readr::read_csv('https://media.githubusercontent.com/media/jpedroza1228/gradschool_dashboard/main/synthetic_data/synthetic_csv/Music_Dance_synthetic.csv') %>% 
-    mutate(college = 'School of Music & Dance') %>% 
-    dplyr::sample_frac(percent)
+  cas <- readr::read_csv('https://raw.githubusercontent.com/jpedroza1228/gradschool_dashboard/main/synthetic_data/synthetic_csv/Arts_Sciences_synthetic.csv') %>% 
+    mutate(college = 'College of Arts & Sciences')
+  
+  bus <- readr::read_csv('https://raw.githubusercontent.com/jpedroza1228/gradschool_dashboard/main/synthetic_data/synthetic_csv/Business_synthetic.csv') %>% 
+    mutate(college = 'Lundquist College of Business')
+  
+  des <- readr::read_csv('https://raw.githubusercontent.com/jpedroza1228/gradschool_dashboard/main/synthetic_data/synthetic_csv/Design_synthetic.csv') %>% 
+    mutate(college = 'College of Design')
+  
+  coe <- readr::read_csv('https://raw.githubusercontent.com/jpedroza1228/gradschool_dashboard/main/synthetic_data/synthetic_csv/Education_synthetic.csv') %>% 
+    mutate(college = 'College of Education')
+  
+  sojc <- readr::read_csv('https://raw.githubusercontent.com/jpedroza1228/gradschool_dashboard/main/synthetic_data/synthetic_csv/Journalism_Communication_synthetic.csv') %>% 
+    mutate(college = 'School of Journalism & Communication')
+  
+  law <- readr::read_csv('https://raw.githubusercontent.com/jpedroza1228/gradschool_dashboard/main/synthetic_data/synthetic_csv/Law_synthetic.csv') %>% 
+    mutate(college = 'School of Law')
+  
+  mus <- readr::read_csv('https://raw.githubusercontent.com/jpedroza1228/gradschool_dashboard/main/synthetic_data/synthetic_csv/Music_Dance_synthetic.csv') %>% 
+    mutate(college = 'School of Music & Dance')
   
   joined <- dplyr::full_join(cas, bus) %>% 
     dplyr::full_join(des) %>% 
@@ -53,7 +52,7 @@ colleges_combined <- function(percent){
 }
 
 set.seed(123654)
-uo <- colleges_combined(percent = .01)
+uo <- colleges_combined()
 
 ```
 
