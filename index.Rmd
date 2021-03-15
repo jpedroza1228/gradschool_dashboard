@@ -1,5 +1,5 @@
 ---
-title: "Example Dashboard"
+title: "University of Oregon Graduate School Dashboard"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
@@ -10,16 +10,18 @@ output:
 library(flexdashboard)
 library(tidyverse)
 library(ggridges)
+library(ggpubr)
 library(plotly)
 library(reactable)
 
+
 theme_set(theme_classic())
 
-wide <- read_csv('C:/Users/cpppe/Desktop/github_projects/gradschool_dashboard/data/wide_data.csv') %>% 
+uo <- read_csv('C:/Users/cpppe/Desktop/github_projects/gradschool_dashboard/do_not_push/data/wide_data.csv') %>% 
   filter(year == 18) %>% 
   dplyr::select(-X1)
 
-wide <- wide %>% 
+uo <- uo %>% 
   mutate(credit_per_class = credit/headcount,
          credit_per_full_num = case_when(credit_per_class < 2 ~ 1,
                                       credit_per_class >= 2 & credit_per_class < 3 ~ 2,
@@ -38,8 +40,9 @@ wide <- wide %>%
                                       credit_per_class == 15 ~ 15)) %>% 
   filter(course_level == 'Undergraduate')
 
-wide <- wide %>% 
-  sample_frac(.05)
+# set.seed(123654)
+# uo <- uo %>%
+#   sample_frac(.01)
 ```
 
 University of Oregon
@@ -47,9 +50,75 @@ University of Oregon
 
 Inputs {.sidebar}
 -----------------------------------------------------------------------
-This should be an explanation of the first page as well as the plots for the following tabs (each college).  
+This dashboard is for those in the Graduate School that are interested in the average teaching graduate employment (GE) full-time equivalency (FTE), distribution of various types of GE opportunities across the University of Oregon (UO), and the correlations between GE teaching FTE and student credit hours. 
+
+Synthetic data can be found [here](https://github.com/jpedroza1228/gradschool_dashboard/tree/main/synthetic_data/synthetic_csv)
+
+**Common terms used in all visuals and tables**\n
+
+CAS = College of Arts & Sciences\n
+
+COD = College of Design\n
+
+COE = College of Education\n
+
+LCOB = Lundquist College of Business\n
+
+SOJC = School of Journalism & Communication\n
+
+LAW = Law School\n
+
+SOMD = School of Music & Dance\n
+
+GE = Graduate Employment\n
+
+FTE = Full-time Equivalency\n
+
+UO = University of Oregon\n
+
 
 Column {data-width=600}
+-----------------------------------------------------------------------
+
+### Average FTE for GEs Across Colleges & Departments
+
+```{r}
+uo %>% 
+  filter(ge_teach == 1 &
+           college != 'Graduate School') %>% 
+  group_by(course_dept, ge_teach) %>%
+  mutate(mean_fte = mean(ge_teach_fte),
+         mean_fte = round(mean_fte, digits = 3),
+         ge_teach_n = n(),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) %>%
+  ungroup() %>%
+  ggplot(aes(fct_reorder(course_dept, mean_fte), mean_fte)) +
+  geom_col(position = 'dodge', aes(fill = college)) +
+  # geom_point(aes(color = college)) +
+  geom_text(aes(label = mean_fte), hjust = 1, size = 2.75) +
+  geom_text(aes(label = college, y = .03),
+            position = position_dodge(width = .5),
+            size = 2.75) +
+  scale_y_continuous(limits = c(0, .5),
+                     expand = c(0, 0)) +
+  scale_fill_manual(values = c('#FFF6B7','#8CD4C9', '#F7471A', '#D1E6F2', '#23A1E3', '#AA1818', '#601a35')) +
+  coord_flip() +
+  labs(title = 'Average Teaching FTE Across Departments at UO',
+       caption = '',
+       x = ' ',
+       y = 'Average GE Teaching FTE') +
+  theme(legend.position = 'none',
+        axis.text.y = element_text(size = 8))
+
+```
+
+Column {data-width=400}
 -----------------------------------------------------------------------
 
 ### Density of GEs Across the Colleges
@@ -57,7 +126,7 @@ Column {data-width=600}
 ```{r}
 stu <- c('Doctoral' = '#669b3e', 'Law' = '#398b98', 'Masters' = '#ea5227')
 
-wide %>%
+uo %>%
   filter(ge == 1) %>% 
   pivot_longer(cols = c(5, 7, 9, 11),
                names_to = 'fte_ge',
@@ -77,46 +146,39 @@ wide %>%
                          'ge_teach_fte' = 'Teaching GE')) %>% 
   drop_na(college, student_level) %>% 
   ggplot(aes(x = amount_fte, y = college, fill = student_level)) +
-  geom_density_ridges(alpha = .4, color = 'gray70', scale = .85) +
+  geom_density_ridges(alpha = .3, color = 'gray70', scale = .9) +
   facet_wrap(~fte_ge, ncol = 3) +
   scale_x_continuous(breaks = c(.2, .4, .49),
                      limits = c(.1, .60)) +
   geom_vline(linetype = 1, xintercept = .2, size = .5, alpha = .5) +
   geom_vline(linetype = 2, xintercept = .4, size = .5, alpha = .5) +
   geom_vline(linetype = 3, xintercept = .49, size = .5, alpha = .5) +
-  labs(x = 'Amount of GE FTE',
-       y = 'College',
+  labs(x = 'Amount of GEs at varying FTE',
+       y = ' ',
        fill = 'Student Level',
-       title = 'Density of Different Graduate Employment (GE) types by College',
-       caption = 'Note. .2, .4, and .49 are the most common GE full-time equivalent (FTE) values\n
-       SOMD = School of Music & Dance; SOJC = School of Journalism & Communication\n
-       LCOB = Lundquist College of Business; LAW = Law School\n
-       COE = College of Education; COD = College of Design\n
-       CAS = College of Arts & Sciences') +
+       title = 'Density of Different GE types by College',
+       caption = 'Note. .2, .4, and .49 are the most common GE FTE values') +
   scale_fill_manual(values = stu) +
   theme(legend.position = 'bottom')
 ```
 
-Column {data-width=400}
+
+Colleges {data-orientation=rows}
+=======================================================================
+
+Row {.tabset data-width=1000}
 -----------------------------------------------------------------------
 
-### Average FTE for GEs Across Colleges & Departments
+### College of Arts & Sciences
 
 ```{r}
-mean_fte_plot <- wide %>% 
-  filter(ge_teach == 1 &
-           college != 'Graduate School') %>% 
-  group_by(course_dept, ge_teach) %>%
-  mutate(mean_fte = mean(ge_teach_fte),
-         ge_teach_n = n()) %>%
-  ungroup() %>%
-  ggplot(aes(college, mean_fte, size = ge_teach_n)) +
-  geom_point(aes(color = course_dept)) +
-  coord_flip() +
-  scale_y_continuous(breaks = c(.2, .3, .4, .5),
-                     limits = c(.2, .5)) +
-  labs(x = 'Mean Teaching FTE',
-       y = ' ') +
+cas_p_static <- uo %>% 
+  filter(college == 'College of Arts & Sciences' &
+           ge_teach_fte < .5) %>% 
+  drop_na(ge_teach_fte, credit) %>% 
+  ggplot(aes(ge_teach_fte, credit)) +
+  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
+  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1) +
   theme(legend.position = 'none') +
   scale_color_manual(values = c('#5e2228', '#d22a2c', '#9b2a30', '#c80010',
                      '#6a1f25', '#d72d2b', '#5b2c2f', '#387448',
@@ -127,159 +189,241 @@ mean_fte_plot <- wide %>%
                      '#4b5f71', '#3f6698', '#26657f', '#398b98',
                      '#ddca72', '#c3b37d', '#d3bb95', '#c4bb9b',
                      '#a26540',
-                     '#dbd5a5', '#a86428', '#c7a860', '#c0cc56', 
+                     '#dbd5a5', '#a86428', '#c7a860', '#c0cc56',
                      '#e5e1d4', '#d3bb95', '#a26540', '#ead568',
                      '#7f5d47', '#b23a2d', '#c33431', 'd74122',
                      '#b23a2d'))
 
-ggplotly(mean_fte_plot) %>% 
-  partial_bundle()
-```
+cas_plot_static <- ggplotly(cas_p_static) %>% 
+                    partial_bundle() %>% 
+                    toWebGL()
 
-Colleges
-=======================================================================
-
-Column {.tabset}
------------------------------------------------------------------------
-
-### College of Arts & Sciences
-
-```{r}
-cas_scat <- wide %>% 
+cas_p <- uo %>% 
   filter(college == 'College of Arts & Sciences' &
            ge_teach_fte < .5) %>% 
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
-  geom_point(aes(color = as.factor(course_dept)), alpha = .7) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
-  theme(legend.position = 'none') 
-  # scale_color_manual(values = c('#5e2228', '#d22a2c', '#9b2a30', '#c80010',
-  #                    '#6a1f25', '#d72d2b', '#5b2c2f', '#387448',
-  #                    '#c0c5ba', '#888980', '#344039', '#4f4c3c',
-  #                    '#807f67', '#386350', '#387448', '#5b6242',
-  #                    '#669b3e', '#808572', '#7fb7b7', '#53636b',
-  #                    '#85b3c1', '#507b8b', '#2c6195', '#4b5f71',
-  #                    '#4b5f71', '#3f6698', '#26657f', '#398b98',
-  #                    '#ddca72', '#c3b37d', '#d3bb95', '#c4bb9b',
-  #                    '#a26540',
-  #                    '#dbd5a5', '#a86428', '#c7a860', '#c0cc56', 
-  #                    '#e5e1d4', '#d3bb95', '#a26540', '#ead568',
-  #                    '#7f5d47', '#b23a2d', '#c33431', 'd74122',
-  #                    '#b23a2d'))
+  # geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
+  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1) +
+  theme(legend.position = 'none') +
+  scale_color_manual(values = c('#5e2228', '#d22a2c', '#9b2a30', '#c80010',
+                                '#6a1f25', '#d72d2b', '#5b2c2f', '#387448',
+                                '#c0c5ba', '#888980', '#344039', '#4f4c3c',
+                                '#807f67', '#386350', '#387448', '#5b6242',
+                                '#669b3e', '#808572', '#7fb7b7', '#53636b',
+                                '#85b3c1', '#507b8b', '#2c6195', '#4b5f71',
+                                '#4b5f71', '#3f6698', '#26657f', '#398b98',
+                                '#ddca72', '#c3b37d', '#d3bb95', '#c4bb9b',
+                                '#a26540',
+                                '#dbd5a5', '#a86428', '#c7a860', '#c0cc56',
+                                '#e5e1d4', '#d3bb95', '#a26540', '#ead568',
+                                '#7f5d47', '#b23a2d', '#c33431', 'd74122',
+                                '#b23a2d'))
 
-ggplotly(cas_scat) %>% 
-  partial_bundle()
+cas_plot <- ggplotly(cas_p) %>% 
+  partial_bundle() %>% 
+  toWebGL()
+
+subplot(cas_plot_static, cas_plot)
+
 ```
 
 ### College of Design
 
 ```{r}
-wide %>% 
+# make sure colors match for both plots
+cod_major <- c('Architecture' = '#FFF6B7',
+               'Art' = '#8CD4C9',
+               'Art History' = '#F7471A',
+               'Historic Preservation' = '#D1E6F2',
+               'Interior Architecture' = '#23A1E3',
+               'Landscape Architecture' = '#AA1818',
+               'Product Design' = '#601a35')
+
+# make sure colors match for both plots
+cod1 <- uo %>% 
   filter(college == 'College of Design' &
-           ge_teach_fte < .5) %>% 
+           ge_teach_fte < .5) %>%
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
-  geom_point(aes(color = as.factor(course_dept)), alpha = .7) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
-  # scale_color_manual(values = c('#669b3e', '#398b98', '#ea5227', '#d72d2b', '#4b5f71')) +
-  theme(legend.title = element_blank())
+  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
+  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
+  scale_colour_manual(name = "course_dept",values = cod_major) +
+  xlim(0.0, .5) +
+  labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
+       subtitle = 'for College of Design',
+       x = 'GE Teaching FTE',
+       y = 'Undergraduate Credit Hours') +
+  theme(legend.position = 'none')
+
+cod2 <- uo %>% 
+  filter(college == 'College of Design' &
+           ge_teach_fte < .5) %>%
+  drop_na(ge_teach_fte, credit) %>% 
+  ggplot(aes(ge_teach_fte, credit)) +
+  # geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
+  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
+  scale_colour_manual(name = "course_dept",values = cod_major) +
+  xlim(0.0, .5)  +
+    labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
+       subtitle = 'for College of Design',
+       x = 'GE Teaching FTE',
+       y = 'Undergraduate Credit Hours')
+
+ggarrange(cod1, cod2, common.legend = TRUE)
 
 ```
 
 ### College of Education
 
 ```{r}
-wide %>% 
+# make sure colors match for both plots
+coe_major <- c('Counseling Psychology & Human Services' = '#669b3e',
+               'Education Studies' = '#d72d2b',
+               'Educational Methodology, Policy, & Leadership' = '#398b98',
+               'Special Education & Clinical Sciences' = '#ea5227')
+
+# make sure colors match for both plots
+coe1 <- uo %>% 
   filter(college == 'College of Education' &
            ge_teach_fte < .5) %>% 
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
-  geom_point(aes(color = as.factor(course_dept)), alpha = .5) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
-  # scale_color_manual(values = c('#669b3e', '#398b98', '#ea5227', '#d72d2b')) +
-  theme(legend.title = element_blank())
+  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
+  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
+  scale_color_manual(values = coe_major) +
+  xlim(0.0, .5) +
+  labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
+       subtitle = 'for College of Education',
+       x = 'GE Teaching FTE',
+       y = 'Undergraduate Credit Hours') +
+  theme(legend.position = 'none')
+
+coe2 <- uo %>% 
+  filter(college == 'College of Education' &
+           ge_teach_fte < .5) %>% 
+  drop_na(ge_teach_fte, credit) %>% 
+  ggplot(aes(ge_teach_fte, credit)) +
+  # geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
+  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
+  scale_color_manual(values = coe_major) +
+  xlim(0.0, .5) +
+    labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
+       subtitle = 'for College of Education',
+       x = 'GE Teaching FTE',
+       y = 'Undergraduate Credit Hours')
+
+ggarrange(coe1, coe2, common.legend = TRUE)
 
 ```
 
 ### Lundquist College of Business
 
 ```{r}
-wide %>% 
+# make sure colors match for both plots
+uo %>% 
   filter(college == 'Lundquist College of Business' &
            ge_teach_fte < .5) %>% 
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
-  geom_point(aes(color = as.factor(course_dept)), alpha = .5) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
-  # scale_color_manual(values = c('#398b98')) +
-  theme(legend.title = element_blank())
+  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
+  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
+  xlim(0.0, .5) +
+  scale_color_manual(values = c('#398b98')) +
+  # annotate('text', x = .2, y = 130, label = 'Business Administration') +
+  labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
+       subtitle = 'for Business Administration',
+       x = 'GE Teaching FTE',
+       y = 'Undergraduate Credit Hours') +
+    theme(legend.position = 'none')
 
 ```
 
 ### School of Journalism & Communication
 
 ```{r}
-wide %>% 
+# make sure colors match for both plots
+uo %>% 
   filter(college == 'School of Journalism & Communication' &
            ge_teach_fte < .5) %>% 
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
-  geom_point(aes(color = as.factor(course_dept)), alpha = .5) +
+  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
   geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
-  # scale_color_manual(values = c('#398b98')) +
-  theme(legend.title = element_blank())
+  labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
+       subtitle = 'for Journalism',
+       x = 'GE Teaching FTE',
+       y = 'Undergraduate Credit Hours') +
+  theme(legend.position = 'none') +
+  scale_color_manual(values = c('#398b98'))
+  # annotate('text', x = .2, y = 120, label = 'Journalism')
 
 ```
 
 ### School of Law
 
 ```{r}
-wide %>% 
+uo %>% 
   filter(college == 'School of Law' &
            ge_teach_fte < .5) %>% 
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
-  geom_point(aes(color = as.factor(course_dept)), alpha = .5) +
+  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
   geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
-  # scale_color_manual(values = c('#398b98')) +
-  theme(legend.title = element_blank())
+  labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
+       subtitle = 'for Law',
+       x = 'GE Teaching FTE',
+       y = 'Undergraduate Credit Hours') +
+  theme(legend.position = 'none') +
+  scale_color_manual(values = c('#398b98'))
+  # annotate('text', x = .3, y = 245, label = 'Law')
 
 ```
 
 ### School of Music & Dance
 
 ```{r}
-wide %>% 
+
+uo %>% 
   filter(college == 'School of Music & Dance' &
            ge_teach_fte < .5) %>% 
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
-  geom_point(aes(color = as.factor(course_dept)), alpha = .5) +
+  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
   geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
-  # scale_color_manual(values = c('#398b98')) +
-  theme(legend.title = element_blank())
+  labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
+       subtitle = 'for Music',
+       x = 'GE Teaching FTE',
+       y = 'Undergraduate Credit Hours') +
+  theme(legend.position = 'none') +
+  scale_color_manual(values = c('#398b98'))
+  # annotate('text', x = .1, y = 45, label = 'Music')
 
 ```
 
-Column (.tabset)
+Row 
 -----------------------------------------------------------------------
 
 ### Average GE Teaching FTE & Undergraduate Course Credits
+
 ```{r}
-wide %>% 
+# make sure colors match for both plots
+uo %>% 
   filter(ge_teach == 1) %>% 
-  drop_na(ge_teach, ge_teach_fte, credit) %>% 
+  drop_na(ge_teach, ge_teach_fte, credit, fte) %>% 
   group_by(college, course_dept, ge_teach) %>%
   summarize(mean_fte = mean(ge_teach_fte),
          `GE Teaching Observations` = n(),
          mean_credit = mean(credit),
+         mean_class_fte = mean(fte),
          `Average GE Teaching FTE` = round(mean_fte, 3),
-         `Average Student Credit Hours` = round(mean_credit, 3)) %>% 
+         `Average Student Credit Hours` = round(mean_credit, 3),
+         `Average Student Class FTE` = round(mean_class_fte, 3)) %>% 
   rename(College = college,
          `Course Department` = course_dept) %>% 
   ungroup() %>% 
   dplyr::select(College, `Course Department`, `GE Teaching Observations`, `Average GE Teaching FTE`,
-                `Average Student Credit Hours`) %>% 
+                `Average Student Class FTE`, `Average Student Credit Hours`) %>% 
   reactable::reactable()
 
 ```
@@ -300,7 +444,7 @@ beta_func <- function (object){
     return(object)
 }
 
-wide_lm_list <- wide %>% 
+wide_lm_list <- uo %>% 
   drop_na(college, course_dept, credit, ge_teach_fte) %>% 
   group_by(college, course_dept) %>% 
   nest() %>% 
@@ -313,13 +457,16 @@ wide_lm_list <- wide %>%
          lm_r = map_dbl(lm_r2, ~sqrt(.x)))
 
 wide_lm_list %>% 
-  dplyr::select(college, course_dept, ge_teach_fte_b, betas, lm_pvalue) %>% 
+  dplyr::select(college, course_dept, betas, lm_pvalue) %>% 
   rename(`College` = college,
          `Course Department` = course_dept) %>% 
-  mutate(b = round(ge_teach_fte_b, digits = 3),
-         beta = round(betas, digits = 3), 
+  mutate(
+    b = round(ge_teach_fte_b, digits = 3),
+         "\u03b2" = round(betas, digits = 3), 
          `p value` = round(lm_pvalue, digits = 3)) %>% 
-  dplyr::select(-ge_teach_fte_b, -lm_pvalue, -betas) %>% 
+  dplyr::select(
+    -ge_teach_fte_b,
+    -lm_pvalue, -betas) %>% 
   reactable::reactable()
 ```
 

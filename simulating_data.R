@@ -419,4 +419,34 @@ mus_sch <- college_finder(college = 'School of Music & Dance.csv')  %>%
 
 
 
+# only use 20% of the data for each college
+
+# cas <- read_csv("C:/Users/cpppe/Desktop/github_projects/gradschool_dashboard/synthetic_data/synthetic_csv/Arts_Sciences_synthetic.csv") %>% 
+#   sample_frac(.2)
+# 
+# bus <- read_csv("C:/Users/cpppe/Desktop/github_projects/gradschool_dashboard/synthetic_data/synthetic_csv/Business_synthetic.csv") %>% 
+#   sample_frac(.2)
+# 
+# cod <- read_csv("C:/Users/cpppe/Desktop/github_projects/gradschool_dashboard/synthetic_data/synthetic_csv/Design_synthetic.csv") %>% 
+#   sample_frac(.2)
+# 
+# coe <- read_csv("C:/Users/cpppe/Desktop/github_projects/gradschool_dashboard/synthetic_data/synthetic_csv/Education_synthetic.csv") %>% 
+#   sample_frac(.2)
+# 
+# sojc <- read_csv("C:/Users/cpppe/Desktop/github_projects/gradschool_dashboard/synthetic_data/synthetic_csv/Journalism_Communication_synthetic.csv") %>% 
+#   sample_frac(.2)
+# 
+# law <- read_csv("C:/Users/cpppe/Desktop/github_projects/gradschool_dashboard/synthetic_data/synthetic_csv/Law_synthetic.csv") %>% 
+#   sample_frac(.2)
+# 
+# mus <- read_csv("C:/Users/cpppe/Desktop/github_projects/gradschool_dashboard/synthetic_data/synthetic_csv/Music_Dance_synthetic.csv") %>% 
+#   sample_frac(.2)
+
+# write.csv(cas, 'Arts_Sciences_synthetic.csv')
+# write.csv(bus, 'Business_synthetic.csv')
+# write.csv(cod, 'Design_synthetic.csv')
+# write.csv(coe, 'Education_synthetic.csv')
+# write.csv(sojc, 'Journalism_Communication_synthetic.csv')
+# write.csv(law, 'Law_synthetic.csv')
+# write.csv(mus, 'Music_Dance_synthetic.csv')
 
