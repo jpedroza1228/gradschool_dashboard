@@ -1,37 +1,25 @@
-Date saved: 09 Mar 2021, 12:16 
+Date saved: 15 Mar 2021, 16:12 
 Data frame with original data: cas_sch2 
 Number of synthetic data sets: 1 
 Output file(s):(csv) Arts_Sciences_synthetic2.csv
 Additional file: synobject_Arts_Sciences_synthetic2.RData
 Methods used:
-                   X1                  term         total_credits                    ge 
-             "sample"                "cart"                "cart"                "cart" 
-               ge_fte              ge_teach          ge_teach_fte               ge_rsch 
-               "cart"                "cart"                "cart"                "cart" 
-          ge_rsch_fte              ge_admin          ge_admin_fte            ge_general 
-               "cart"                "cart"                "cart"                "cart" 
-       ge_general_fte          ge_gen_teach      ge_gen_teach_fte           ge_gen_rsch 
-               "cart"                "cart"                "cart"                "cart" 
-      ge_gen_rsch_fte          ge_gen_admin      ge_gen_admin_fte        ge_rsch_funded 
-               "cart"                "cart"                "cart"                "cart" 
-   ge_rsch_funded_fte             dept_fund         dept_fund_fte               support 
-           "constant"                "cart"                "cart"                "cart" 
-            remission                  loan            work_study                   fyf 
-               "cart"                "cart"           "collinear"                "cart" 
-                  nsf               raymund                 lokey            grantschol 
-               "cart"                "cart"           "collinear"                "cart" 
-       general_funded              nsf_diss                  year              term_num 
-               "cart"                "cart"            "constant"                "cart" 
-        student_level           course_dept                   crn         course_number 
-               "cart"                "cart"                "cart"                "cart" 
-                 type              location        credit_subject           credit_type 
-               "cart"                "cart"                "cart"                "cart" 
-         course_level        same_dept_flag     same_college_flag same_college_flag_cas 
-           "constant"                "cart"                "cart"                "cart" 
-  course_level_detail  student_level_detail                credit                   fte 
-               "cart"                "cart"                "cart"           "collinear" 
-            headcount     course_number_cat   credit_subject_full             full_term 
-               "cart"                "cart"                "cart"           "collinear" 
+                   X1                  term         total_credits                    ge                ge_fte              ge_teach          ge_teach_fte 
+             "sample"                "cart"                "cart"                "cart"                "cart"                "cart"                "cart" 
+              ge_rsch           ge_rsch_fte              ge_admin          ge_admin_fte            ge_general        ge_general_fte          ge_gen_teach 
+               "cart"                "cart"                "cart"                "cart"                "cart"                "cart"                "cart" 
+     ge_gen_teach_fte           ge_gen_rsch       ge_gen_rsch_fte          ge_gen_admin      ge_gen_admin_fte        ge_rsch_funded    ge_rsch_funded_fte 
+               "cart"                "cart"                "cart"                "cart"                "cart"                "cart"            "constant" 
+            dept_fund         dept_fund_fte               support             remission                  loan            work_study                   fyf 
+               "cart"                "cart"                "cart"                "cart"                "cart"           "collinear"                "cart" 
+                  nsf               raymund                 lokey            grantschol        general_funded              nsf_diss                  year 
+               "cart"                "cart"           "collinear"                "cart"                "cart"                "cart"            "constant" 
+             term_num         student_level           course_dept                   crn         course_number                  type              location 
+               "cart"                "cart"                "cart"                "cart"                "cart"                "cart"                "cart" 
+       credit_subject           credit_type          course_level        same_dept_flag     same_college_flag same_college_flag_cas   course_level_detail 
+               "cart"                "cart"            "constant"                "cart"                "cart"                "cart"                "cart" 
+ student_level_detail                credit                   fte             headcount     course_number_cat   credit_subject_full             full_term 
+               "cart"                "cart"           "collinear"                "cart"                "cart"                "cart"           "collinear" 
      credit_per_class   credit_per_full_num 
                "cart"                "cart" 
-Seed used: 480487232 
+Seed used: 385420443 

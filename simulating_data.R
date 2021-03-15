@@ -69,10 +69,11 @@ mutate(ge = as.factor(ge),
                                        credit_per_class >= 14 & credit_per_class < 15 ~ 14,
                                        credit_per_class == 15 ~ 15)) %>% 
   filter(year == 18 &
-           course_level == 'Undergraduate')
+           course_level == 'Undergraduate') %>% 
+  sample_frac(.2)
 
-# law_fake <- syn(law_sch)
-# write.syn(law_fake, file = 'Law_synthetic', filetype = 'csv')
+law_fake <- syn(law_sch)
+write.syn(law_fake, file = 'Law_synthetic', filetype = 'csv')
 
 
 cas_sch <- college_finder(college = 'College of Arts & Sciences.csv')  %>%
@@ -117,7 +118,8 @@ cas_sch <- college_finder(college = 'College of Arts & Sciences.csv')  %>%
                                          credit_per_class >= 14 & credit_per_class < 15 ~ 14,
                                          credit_per_class == 15 ~ 15)) %>%
   filter(year == 18 &
-           course_level == 'Undergraduate')
+           course_level == 'Undergraduate') %>% 
+  sample_frac(.2)
 
 cas_sch1 <- cas_sch %>%
   filter(course_dept == 'American English Institute' |
@@ -174,7 +176,7 @@ cas2 <- read_csv("C:/Users/cpppe/Desktop/github_projects/gradschool_dashboard/sy
 
 cas_fake_full <- full_join(cas1, cas2)
 
-# write.csv(cas_fake_full, 'Arts_Sciences_synthetic.csv')
+write.csv(cas_fake_full, 'Arts_Sciences_synthetic.csv')
 
 des_sch <- college_finder(college = 'College of Design.csv')  %>%
   mutate(ge = as.factor(ge),
@@ -219,7 +221,8 @@ des_sch <- college_finder(college = 'College of Design.csv')  %>%
                                          credit_per_class == 15 ~ 15)) %>% 
   filter(year == 18 &
            course_level == 'Undergraduate') %>% 
-  dplyr::select(-course_number)
+  dplyr::select(-course_number) %>% 
+  sample_frac(.2)
 
 # des_fake <- syn(des_sch)
 # write.syn(des_fake, file = 'Design_synthetic', filetype = 'csv')
@@ -267,7 +270,8 @@ coe_sch <- college_finder(college = 'College of Education.csv')  %>%
                                          credit_per_class >= 14 & credit_per_class < 15 ~ 14,
                                          credit_per_class == 15 ~ 15)) %>% 
   filter(year == 18 &
-           course_level == 'Undergraduate')
+           course_level == 'Undergraduate') %>% 
+  sample_frac(.2)
 
 # coe_fake <- syn(coe_sch)
 # write.syn(coe_fake, file = 'Education_synthetic', filetype = 'csv')
@@ -316,7 +320,8 @@ bus_sch <- college_finder(college = 'Lundquist College of Business.csv')  %>%
                                          credit_per_class == 15 ~ 15)) %>% 
   filter(year == 18 &
            course_level == 'Undergraduate') %>% 
-  dplyr::select(-course_number)
+  dplyr::select(-course_number) %>% 
+  sample_frac(.2)
 
 # bus_fake <- syn(bus_sch)
 # write.syn(bus_fake, file = 'Business_synthetic', filetype = 'csv')
@@ -365,7 +370,8 @@ sojc_sch <- college_finder(college = 'School of Journalism & Communication.csv')
                                          credit_per_class == 15 ~ 15)) %>% 
   filter(year == 18 &
            course_level == 'Undergraduate') %>% 
-  dplyr::select(-course_number)
+  dplyr::select(-course_number) %>% 
+  sample_frac(.2)
 
 # sojc_fake <- syn(sojc_sch)
 # write.syn(sojc_fake, file = 'Journalism_Communication_synthetic', filetype = 'csv')
@@ -412,7 +418,8 @@ mus_sch <- college_finder(college = 'School of Music & Dance.csv')  %>%
                                          credit_per_class >= 14 & credit_per_class < 15 ~ 14,
                                          credit_per_class == 15 ~ 15)) %>% 
   filter(year == 18 &
-           course_level == 'Undergraduate')
+           course_level == 'Undergraduate') %>% 
+  sample_frac(.2)
 
 # mus_fake <- syn(mus_sch)
 # write.syn(mus_fake, file = 'Music_Dance_synthetic', filetype = 'csv')

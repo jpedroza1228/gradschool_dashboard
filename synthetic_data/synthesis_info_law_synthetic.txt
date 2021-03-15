@@ -1,37 +1,25 @@
-Date saved: 08 Mar 2021, 16:58 
+Date saved: 15 Mar 2021, 15:46 
 Data frame with original data: law_sch 
 Number of synthetic data sets: 1 
 Output file(s):(csv) Law_synthetic.csv
 Additional file: synobject_Law_synthetic.RData
 Methods used:
-                   X1                  term         total_credits                    ge 
-             "sample"                "cart"                "cart"                "cart" 
-               ge_fte              ge_teach          ge_teach_fte               ge_rsch 
-               "cart"                "cart"                "cart"                "cart" 
-          ge_rsch_fte              ge_admin          ge_admin_fte            ge_general 
-           "constant"                "cart"           "collinear"                "cart" 
-       ge_general_fte          ge_gen_teach      ge_gen_teach_fte           ge_gen_rsch 
-               "cart"           "collinear"           "collinear"           "collinear" 
-      ge_gen_rsch_fte          ge_gen_admin      ge_gen_admin_fte        ge_rsch_funded 
-           "constant"                "cart"                "cart"           "collinear" 
-   ge_rsch_funded_fte             dept_fund         dept_fund_fte               support 
-           "constant"           "collinear"            "constant"                "cart" 
-            remission                  loan            work_study                   fyf 
-               "cart"                "cart"           "collinear"           "collinear" 
-                  nsf               raymund                 lokey            grantschol 
-          "collinear"           "collinear"           "collinear"                "cart" 
-       general_funded              nsf_diss                  year              term_num 
-               "cart"           "collinear"            "constant"                "cart" 
-        student_level           course_dept                   crn         course_number 
-               "cart"           "collinear"                "cart"                "cart" 
-                 type              location        credit_subject           credit_type 
-               "cart"                "cart"           "collinear"           "collinear" 
-         course_level        same_dept_flag     same_college_flag same_college_flag_cas 
-           "constant"            "constant"            "constant"            "constant" 
-  course_level_detail  student_level_detail                credit                   fte 
-               "cart"                "cart"                "cart"           "collinear" 
-            headcount     course_number_cat   credit_subject_full             full_term 
-               "cart"                "cart"           "collinear"           "collinear" 
+                   X1                  term         total_credits                    ge                ge_fte              ge_teach          ge_teach_fte 
+             "sample"                "cart"                "cart"                "cart"                "cart"                "cart"                "cart" 
+              ge_rsch           ge_rsch_fte              ge_admin          ge_admin_fte            ge_general        ge_general_fte          ge_gen_teach 
+               "cart"            "constant"                "cart"           "collinear"                "cart"                "cart"           "collinear" 
+     ge_gen_teach_fte           ge_gen_rsch       ge_gen_rsch_fte          ge_gen_admin      ge_gen_admin_fte        ge_rsch_funded    ge_rsch_funded_fte 
+          "collinear"           "collinear"            "constant"                "cart"                "cart"           "collinear"            "constant" 
+            dept_fund         dept_fund_fte               support             remission                  loan            work_study                   fyf 
+          "collinear"            "constant"                "cart"                "cart"                "cart"           "collinear"           "collinear" 
+                  nsf               raymund                 lokey            grantschol        general_funded              nsf_diss                  year 
+          "collinear"           "collinear"           "collinear"                "cart"                "cart"           "collinear"            "constant" 
+             term_num         student_level           course_dept                   crn         course_number                  type              location 
+               "cart"                "cart"           "collinear"                "cart"                "cart"                "cart"            "constant" 
+       credit_subject           credit_type          course_level        same_dept_flag     same_college_flag same_college_flag_cas   course_level_detail 
+          "collinear"            "constant"            "constant"            "constant"            "constant"            "constant"                "cart" 
+ student_level_detail                credit                   fte             headcount     course_number_cat   credit_subject_full             full_term 
+               "cart"                "cart"           "collinear"                "cart"                "cart"           "collinear"           "collinear" 
      credit_per_class   credit_per_full_num 
                "cart"           "collinear" 
-Seed used: 328164301 
+Seed used: 656908695 

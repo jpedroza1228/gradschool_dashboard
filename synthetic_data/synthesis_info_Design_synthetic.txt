@@ -1,4 +1,4 @@
-Date saved: 08 Mar 2021, 17:32 
+Date saved: 15 Mar 2021, 16:13 
 Data frame with original data: des_sch 
 Number of synthetic data sets: 1 
 Output file(s):(csv) Design_synthetic.csv
@@ -22,4 +22,4 @@ Methods used:
                "cart"                "cart"                "cart"                "cart"                "cart"           "collinear"                "cart" 
   credit_per_full_num 
                "cart" 
-Seed used: 602310466 
+Seed used: 4491650 
