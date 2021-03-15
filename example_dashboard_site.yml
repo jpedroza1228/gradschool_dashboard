@@ -1,6 +1,6 @@
-name: "Example Dashboard"
+name: "University of Oregon Graduate School Dashboard"
 navbar:
-  title: "Example Dashboard"
+  title: "University of Oregon Graduate School Dashboard"
   left:
     - text: "Home"
       href: index.html
