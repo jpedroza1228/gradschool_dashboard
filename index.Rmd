@@ -231,7 +231,7 @@ subplot(cas_plot_static, cas_plot)
 ### College of Design
 
 ```{r}
-# make sure colors match for both plots
+
 cod_major <- c('Architecture' = '#FFF6B7',
                'Art' = '#8CD4C9',
                'Art History' = '#F7471A',
@@ -250,9 +250,7 @@ cod1 <- uo %>%
   geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
   scale_colour_manual(name = "course_dept",values = cod_major) +
   xlim(0.0, .5) +
-  labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
-       subtitle = 'for College of Design',
-       x = 'GE Teaching FTE',
+  labs(x = 'GE Teaching FTE',
        y = 'Undergraduate Credit Hours') +
   theme(legend.position = 'none')
 
@@ -265,19 +263,20 @@ cod2 <- uo %>%
   geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
   scale_colour_manual(name = "course_dept",values = cod_major) +
   xlim(0.0, .5)  +
-    labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
-       subtitle = 'for College of Design',
-       x = 'GE Teaching FTE',
-       y = 'Undergraduate Credit Hours')
+    labs(x = 'GE Teaching FTE',
+       y = ' ')
 
-ggarrange(cod1, cod2, common.legend = TRUE)
+cod_figure <- ggarrange(cod1, cod2, common.legend = TRUE)
+
+annotate_figure(cod_figure,
+                top = text_grob('Association between GE Teaching FTE and Undergraduate Credit Hours \n For College of Design'))
 
 ```
 
 ### College of Education
 
 ```{r}
-# make sure colors match for both plots
+
 coe_major <- c('Counseling Psychology & Human Services' = '#669b3e',
                'Education Studies' = '#d72d2b',
                'Educational Methodology, Policy, & Leadership' = '#398b98',
@@ -293,9 +292,7 @@ coe1 <- uo %>%
   geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
   scale_color_manual(values = coe_major) +
   xlim(0.0, .5) +
-  labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
-       subtitle = 'for College of Education',
-       x = 'GE Teaching FTE',
+  labs(x = 'GE Teaching FTE',
        y = 'Undergraduate Credit Hours') +
   theme(legend.position = 'none')
 
@@ -308,19 +305,20 @@ coe2 <- uo %>%
   geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
   scale_color_manual(values = coe_major) +
   xlim(0.0, .5) +
-    labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
-       subtitle = 'for College of Education',
-       x = 'GE Teaching FTE',
-       y = 'Undergraduate Credit Hours')
+    labs(x = 'GE Teaching FTE',
+       y = ' ')
 
-ggarrange(coe1, coe2, common.legend = TRUE)
+coe_figure <- ggarrange(coe1, coe2, common.legend = TRUE)
+
+annotate_figure(coe_figure,
+                top = text_grob('Association between GE Teaching FTE and Undergraduate Credit Hours \n For College of Education'))
 
 ```
 
 ### Lundquist College of Business
 
 ```{r}
-# make sure colors match for both plots
+
 uo %>% 
   filter(college == 'Lundquist College of Business' &
            ge_teach_fte < .5) %>% 
@@ -342,7 +340,7 @@ uo %>%
 ### School of Journalism & Communication
 
 ```{r}
-# make sure colors match for both plots
+
 uo %>% 
   filter(college == 'School of Journalism & Communication' &
            ge_teach_fte < .5) %>% 
@@ -356,7 +354,6 @@ uo %>%
        y = 'Undergraduate Credit Hours') +
   theme(legend.position = 'none') +
   scale_color_manual(values = c('#398b98'))
-  # annotate('text', x = .2, y = 120, label = 'Journalism')
 
 ```
 
@@ -376,7 +373,6 @@ uo %>%
        y = 'Undergraduate Credit Hours') +
   theme(legend.position = 'none') +
   scale_color_manual(values = c('#398b98'))
-  # annotate('text', x = .3, y = 245, label = 'Law')
 
 ```
 
@@ -397,7 +393,6 @@ uo %>%
        y = 'Undergraduate Credit Hours') +
   theme(legend.position = 'none') +
   scale_color_manual(values = c('#398b98'))
-  # annotate('text', x = .1, y = 45, label = 'Music')
 
 ```
 
@@ -407,7 +402,7 @@ Row
 ### Average GE Teaching FTE & Undergraduate Course Credits
 
 ```{r}
-# make sure colors match for both plots
+
 uo %>% 
   filter(ge_teach == 1) %>% 
   drop_na(ge_teach, ge_teach_fte, credit, fte) %>% 
