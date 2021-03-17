@@ -61,7 +61,7 @@ University of Oregon
 
 Inputs {.sidebar}
 -----------------------------------------------------------------------
-This dashboard is for those in the Graduate School that are interested in the average teaching graduate employment (GE) full-time equivalency (FTE), distribution of various types of GE opportunities across the University of Oregon (UO), and the correlations between GE teaching FTE and student credit hours. 
+This dashboard is for those in the Graduate School that are interested in the average teaching graduate employment (GE) full-time equivalency (FTE), distribution of various types of GE opportunities across the University of Oregon (UO), and the correlations between GE teaching FTE and student credit hours for the 2018-2019 academic year. 
 
 Synthetic data can be found [here](https://github.com/jpedroza1228/gradschool_dashboard/tree/main/synthetic_data/synthetic_csv)
 
@@ -170,10 +170,10 @@ uo %>%
 
 ```
 
-Colleges {data-orientation=rows}
+Colleges
 =======================================================================
 
-Row {.tabset}
+Column {.tabset}
 -----------------------------------------------------------------------
 
 ### College of Arts & Sciences
@@ -232,7 +232,7 @@ cas_plot <- ggplotly(cas_p) %>%
   partial_bundle() %>% 
   toWebGL()
 
-subplot(cas_plot_static, cas_plot)
+subplot(cas_plot_static, cas_plot, nrows = 2)
 
 ```
 
@@ -256,11 +256,11 @@ cod1 <- uo %>%
   geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
   scale_colour_manual(name = "course_dept",values = cod_major) +
   xlim(0.0, .5) +
-  labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
-       subtitle = 'for College of Design',
-       x = 'GE Teaching FTE',
-       y = 'Undergraduate Credit Hours') +
-  theme(legend.position = 'none')
+  labs(x = 'GE Teaching FTE',
+       y = ' ') +
+  guides(colour = guide_legend(nrow = 3)) +
+  theme(legend.title = element_blank(),
+        legend.position = 'bottom')
 
 cod2 <- uo %>% 
   filter(college == 'College of Design' &
@@ -271,12 +271,15 @@ cod2 <- uo %>%
   geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
   scale_colour_manual(name = "course_dept",values = cod_major) +
   xlim(0.0, .5)  +
-    labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
-       subtitle = 'for College of Design',
-       x = 'GE Teaching FTE',
-       y = 'Undergraduate Credit Hours')
+    labs(x = 'GE Teaching FTE',
+       y = ' ') +
+  theme(legend.position = 'none')
 
-ggarrange(cod1, cod2, common.legend = FALSE)
+cod_figure <- ggarrange(cod1, cod2, common.legend = FALSE, nrow = 2)
+
+annotate_figure(cod_figure,
+                top = text_grob('Association between GE Teaching FTE and Undergraduate Credit Hours \n For College of Design'),
+                left = text_grob('Undergraduate Credit Hours' , rot = 90))
 
 ```
 
@@ -297,11 +300,11 @@ coe1 <- uo %>%
   geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
   scale_color_manual(values = coe_major) +
   xlim(0.0, .5) +
-  labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
-       subtitle = 'for College of Education',
-       x = 'GE Teaching FTE',
+  labs(x = 'GE Teaching FTE',
        y = 'Undergraduate Credit Hours') +
-  theme(legend.position = 'none')
+  guides(colour = guide_legend(nrow = 2)) +
+  theme(legend.title = element_blank(),
+        legend.position = 'bottom')
 
 coe2 <- uo %>% 
   filter(college == 'College of Education' &
@@ -312,12 +315,16 @@ coe2 <- uo %>%
   geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
   scale_color_manual(values = coe_major) +
   xlim(0.0, .5) +
-    labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
-       subtitle = 'for College of Education',
-       x = 'GE Teaching FTE',
-       y = 'Undergraduate Credit Hours')
+    labs(x = 'GE Teaching FTE',
+       y = ' ')  +
+  theme(legend.position = 'none')
 
-ggarrange(coe1, coe2, common.legend = FALSE)
+coe_figure <- ggarrange(coe1, coe2, common.legend = FALSE, nrow = 2)
+
+annotate_figure(coe_figure,
+                top = text_grob('Association between GE Teaching FTE and Undergraduate Credit Hours \n For College of Education'),
+                left = text_grob('Undergraduate Credit Hours' , rot = 90))
+
 ```
 
 ### Lundquist College of Business
@@ -358,8 +365,7 @@ uo %>%
        x = 'GE Teaching FTE',
        y = 'Undergraduate Credit Hours') +
   theme(legend.position = 'none') +
-  scale_color_manual(values = c('#398b98')) +
-  annotate('text', x = .2, y = 120, label = 'Journalism')
+  scale_color_manual(values = c('#398b98'))
 
 ```
 
@@ -379,8 +385,7 @@ uo %>%
        x = 'GE Teaching FTE',
        y = 'Undergraduate Credit Hours') +
   theme(legend.position = 'none') +
-  scale_color_manual(values = c('#398b98')) +
-  annotate('text', x = .3, y = 245, label = 'Law')
+  scale_color_manual(values = c('#398b98'))
 
 ```
 
@@ -400,12 +405,11 @@ uo %>%
        x = 'GE Teaching FTE',
        y = 'Undergraduate Credit Hours') +
   theme(legend.position = 'none') +
-  scale_color_manual(values = c('#398b98')) +
-  annotate('text', x = .1, y = 45, label = 'Music')
+  scale_color_manual(values = c('#398b98'))
 
 ```
 
-Row 
+Column 
 -----------------------------------------------------------------------
 
 ### Average GE Teaching FTE & Undergraduate Course Credits
