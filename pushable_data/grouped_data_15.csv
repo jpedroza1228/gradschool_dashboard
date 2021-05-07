@@ -1,0 +1,122 @@
+"","course_dept","full_term","college","teach_ge_n","teach_ge_fte","mean_credit","total_credit"
+"1","Anthropology",201501,"College of Arts & Sciences",6014,0.448064516129032,36.5567010309278,219852
+"2","Anthropology",201502,"College of Arts & Sciences",6720,0.453666666666667,37.2723214285714,250470
+"3","Anthropology",201503,"College of Arts & Sciences",6240,0.464666666666667,40.8173076923077,254700
+"4","Architecture",201501,"College of Design",2400,0.386,38.95625,93495
+"5","Architecture",201502,"College of Design",2414,0.394705882352941,40.7394366197183,98345
+"6","Architecture",201503,"College of Design",1738,0.400909090909091,34.1962025316456,59433
+"7","Art",201501,"College of Design",5334,0.474285714285714,20.1417322834646,107436
+"8","Art",201502,"College of Design",5817,0.47,21.173285198556,123165
+"9","Art",201503,"College of Design",5940,0.464545454545455,21.5407407407407,127952
+"10","Art History",201501,"College of Design",630,0.409,49.1111111111111,30940
+"11","Art History",201502,"College of Design",730,0.409,32.4246575342466,23670
+"12","Art History",201503,"College of Design",660,0.379,38.2424242424242,25240
+"13","Asian Studies",201501,"College of Arts & Sciences",9,0.4,2.66666666666667,24
+"14","Asian Studies",201502,"College of Arts & Sciences",33,0.4,10.8181818181818,357
+"15","Asian Studies",201503,"College of Arts & Sciences",39,0.4,11.5384615384615,450
+"16","Biology",201501,"College of Arts & Sciences",9360,0.445972222222222,35.6384615384615,333576
+"17","Biology",201502,"College of Arts & Sciences",6356,0.425892857142857,34.5198237885463,219408
+"18","Biology",201503,"College of Arts & Sciences",6200,0.441,33.1491935483871,205525
+"19","Chemistry",201501,"College of Arts & Sciences",6102,0.452259259259259,57.3451327433628,349920
+"20","Chemistry",201502,"College of Arts & Sciences",4200,0.450208333333333,54.1771428571429,227544
+"21","Chemistry",201503,"College of Arts & Sciences",3192,0.449142857142857,53.6118421052632,171129
+"22","Classics",201501,"College of Arts & Sciences",248,0.4225,28.8225806451613,7148
+"23","Classics",201502,"College of Arts & Sciences",186,0.43,20.2741935483871,3771
+"24","Classics",201503,"College of Arts & Sciences",159,0.43,22.0754716981132,3510
+"25","Comparative Literature",201501,"College of Arts & Sciences",1494,0.45,24.7590361445783,36990
+"26","Comparative Literature",201502,"College of Arts & Sciences",2166,0.452105263157895,22.0438596491228,47747
+"27","Comparative Literature",201503,"College of Arts & Sciences",2289,0.451428571428571,25.3761467889908,58086
+"28","Computer & Information Science",201501,"College of Arts & Sciences",3400,0.45,45.4632352941176,154575
+"29","Computer & Information Science",201502,"College of Arts & Sciences",4290,0.45,38.7333333333333,166166
+"30","Computer & Information Science",201503,"College of Arts & Sciences",4710,0.45,38.1656050955414,179760
+"31","Counseling Psychology & Human Services",201501,"College of Education",3885,0.451904761904762,35.8540540540541,139293
+"32","Counseling Psychology & Human Services",201502,"College of Education",3549,0.453809523809524,35.6627218934911,126567
+"33","Counseling Psychology & Human Services",201503,"College of Education",3843,0.455714285714286,29.2568306010929,112434
+"34","Creative Writing",201501,"College of Arts & Sciences",1224,0.468888888888889,14.3823529411765,17604
+"35","Creative Writing",201502,"College of Arts & Sciences",1224,0.484705882352941,14.1805555555556,17357
+"36","Creative Writing",201503,"College of Arts & Sciences",1540,0.4855,15.0909090909091,23240
+"37","Dance",201501,"School of Music & Dance",905,0.454,8.27624309392265,7490
+"38","Dance",201502,"School of Music & Dance",945,0.454,7.83597883597884,7405
+"39","Dance",201503,"School of Music & Dance",845,0.454,7.9112426035503,6685
+"40","E Asian Languages & Literature",201501,"College of Arts & Sciences",8840,0.438076923076923,16.5882352941176,146640
+"41","E Asian Languages & Literature",201502,"College of Arts & Sciences",8937,0.423333333333333,14.3595166163142,128331
+"42","E Asian Languages & Literature",201503,"College of Arts & Sciences",8019,0.406666666666667,15.6026936026936,125118
+"43","Economics",201501,"College of Arts & Sciences",12336,0.470208333333333,67.5603112840467,833424
+"44","Economics",201502,"College of Arts & Sciences",11421,0.48936170212766,71.7860082304527,819868
+"45","Economics",201503,"College of Arts & Sciences",9724,0.49,75.0995475113122,730268
+"46","Education Studies",201501,"College of Education",1034,0.449090909090909,42.5744680851064,44022
+"47","Education Studies",201502,"College of Education",1260,0.4375,44.5714285714286,56160
+"48","Education Studies",201503,"College of Education",1020,0.4375,46.3764705882353,47304
+"49","Educational Methodology, Policy, & Leadership",201501,"College of Education",384,0.3075,11.1770833333333,4292
+"50","Educational Methodology, Policy, & Leadership",201502,"College of Education",380,0.3075,11.8842105263158,4516
+"51","Educational Methodology, Policy, & Leadership",201503,"College of Education",360,0.3075,10.9666666666667,3948
+"52","English",201501,"College of Arts & Sciences",37000,0.478,21.3324324324324,789300
+"53","English",201502,"College of Arts & Sciences",34656,0.4825,22.0429362880886,763920
+"54","English",201503,"College of Arts & Sciences",31500,0.484,20.9585714285714,660195
+"55","Environmental Studies",201501,"College of Arts & Sciences",781,0.435454545454545,44.1549295774648,34485
+"56","Environmental Studies",201502,"College of Arts & Sciences",512,0.43125,39.6875,20320
+"57","Environmental Studies",201503,"College of Arts & Sciences",512,0.42375,33.546875,17176
+"58","Folklore",201501,"College of Arts & Sciences",160,0.477,10.125,1620
+"59","Folklore",201502,"College of Arts & Sciences",160,0.4675,9.05,1448
+"60","Folklore",201503,"College of Arts & Sciences",217,0.464285714285714,15.9354838709677,3458
+"61","Geography",201501,"College of Arts & Sciences",2574,0.414545454545455,29.8376068376068,76802
+"62","Geography",201502,"College of Arts & Sciences",3124,0.416363636363636,26.8380281690141,83842
+"63","Geography",201503,"College of Arts & Sciences",3264,0.41125,27.7647058823529,90624
+"64","Historic Preservation",201501,"College of Design",32,0.3,14.875,476
+"65","Historic Preservation",201502,"College of Design",40,0.3,12.9,516
+"66","Historic Preservation",201503,"College of Design",24,0.3,20.5833333333333,494
+"67","History",201501,"College of Arts & Sciences",5434,0.4,29.8995215311005,162474
+"68","History",201502,"College of Arts & Sciences",6183,0.403333333333333,29.9519650655022,185193
+"69","History",201503,"College of Arts & Sciences",6552,0.403214285714286,28.7991452991453,188692
+"70","Human Physiology",201501,"College of Arts & Sciences",2937,0.43030303030303,69.5505617977528,204270
+"71","Human Physiology",201502,"College of Arts & Sciences",2100,0.442333333333333,69.8142857142857,146610
+"72","Human Physiology",201503,"College of Arts & Sciences",2610,0.42,54.4444444444444,142100
+"73","Interior Architecture",201501,"College of Design",136,0.375,31.2647058823529,4252
+"74","International Studies",201501,"College of Arts & Sciences",1442,0.422857142857143,27.3398058252427,39424
+"75","International Studies",201502,"College of Arts & Sciences",1045,0.412727272727273,23.3578947368421,24409
+"76","International Studies",201503,"College of Arts & Sciences",1200,0.414,19.1833333333333,23020
+"77","Journalism",201501,"School of Journalism & Communication",13617,0.399607843137255,63.9176029962547,870366
+"78","Journalism",201502,"School of Journalism & Communication",12495,0.409019607843137,67.5918367346939,844560
+"79","Journalism",201503,"School of Journalism & Communication",12896,0.408269230769231,67.4637096774194,870012
+"80","Landscape Architecture",201501,"College of Design",546,0.242857142857143,27.0641025641026,14777
+"81","Landscape Architecture",201502,"College of Design",623,0.3,20.1460674157303,12551
+"82","Landscape Architecture",201503,"College of Design",552,0.283333333333333,20.0326086956522,11058
+"83","Law",201501,"School of Law",791,0.397142857142857,55.3982300884956,43820
+"84","Law",201502,"School of Law",625,0.436,48.868,30542.5
+"85","Law",201503,"School of Law",720,0.396666666666667,48.5,34920
+"86","Linguistics",201501,"College of Arts & Sciences",4134,0.448461538461538,18.3207547169811,75738
+"87","Linguistics",201502,"College of Arts & Sciences",2992,0.457272727272727,19.6102941176471,58674
+"88","Linguistics",201503,"College of Arts & Sciences",2856,0.451428571428571,19.6544117647059,56133
+"89","Mathematics",201501,"College of Arts & Sciences",41640,0.49,31.6383285302594,1317420
+"90","Mathematics",201502,"College of Arts & Sciences",39360,0.49,30.9756097560976,1219200
+"91","Mathematics",201503,"College of Arts & Sciences",31093,0.49,31.8083491461101,989017
+"92","Music",201501,"School of Music & Dance",40796,0.307096774193548,16.8632218844985,687952
+"93","Music",201502,"School of Music & Dance",41419,0.296839344262295,15,621285
+"94","Music",201503,"School of Music & Dance",38186,0.292537704918033,16.9600638977636,647637
+"95","Philosophy",201501,"College of Arts & Sciences",4002,0.445172413793103,34.0579710144928,136300
+"96","Philosophy",201502,"College of Arts & Sciences",4816,0.453214285714286,25.2558139534884,121632
+"97","Philosophy",201503,"College of Arts & Sciences",4536,0.428518518518519,24.8988095238095,112941
+"98","Physics",201501,"College of Arts & Sciences",11016,0.348333333333333,46.9362745098039,517050
+"99","Physics",201502,"College of Arts & Sciences",9593,0.351509433962264,47.9613259668508,460093
+"100","Physics",201503,"College of Arts & Sciences",8050,0.3334,48.2484472049689,388400
+"101","Political Science",201501,"College of Arts & Sciences",6528,0.428125,41.2009803921569,268960
+"102","Political Science",201502,"College of Arts & Sciences",7260,0.466,35.9297520661157,260850
+"103","Political Science",201503,"College of Arts & Sciences",6873,0.455862068965517,31.0337552742616,213295
+"104","Psychology",201501,"College of Arts & Sciences",10850,0.469,55.258064516129,599550
+"105","Psychology",201502,"College of Arts & Sciences",11328,0.467083333333333,57.3559322033898,649728
+"106","Psychology",201503,"College of Arts & Sciences",14300,0.459818181818182,48.7115384615385,696575
+"107","Romance Languages",201501,"College of Arts & Sciences",30303,0.49,14.989703989704,454233
+"108","Romance Languages",201502,"College of Arts & Sciences",26565,0.49,14.0237154150198,372540
+"109","Romance Languages",201503,"College of Arts & Sciences",22869,0.49,13.5757575757576,310464
+"110","Russian, East European, & Eurasian Studies",201501,"College of Arts & Sciences",450,0.475,8.18666666666667,3684
+"111","Russian, East European, & Eurasian Studies",201502,"College of Arts & Sciences",415,0.472,7.48192771084337,3105
+"112","Russian, East European, & Eurasian Studies",201503,"College of Arts & Sciences",280,0.472,8.58928571428571,2405
+"113","Sociology",201501,"College of Arts & Sciences",4736,0.4171875,44.2905405405405,209760
+"114","Sociology",201502,"College of Arts & Sciences",4929,0.423548387096774,39.5094339622642,194742
+"115","Sociology",201503,"College of Arts & Sciences",4726,0.426764705882353,45.7338129496403,216138
+"116","Special Education & Clinical Sciences",201501,"College of Education",3186,0.333888888888889,27.9717514124294,89118
+"117","Special Education & Clinical Sciences",201502,"College of Education",2970,0.333888888888889,29,86130
+"118","Special Education & Clinical Sciences",201503,"College of Education",2916,0.333888888888889,29.8518518518519,87048
+"119","Theatre Arts",201501,"College of Arts & Sciences",864,0.45,12.59375,10881
+"120","Theatre Arts",201502,"College of Arts & Sciences",1035,0.45,8.55652173913044,8856
+"121","Theatre Arts",201503,"College of Arts & Sciences",936,0.44,10,9360
