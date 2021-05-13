@@ -9,40 +9,21 @@ output:
 ```{r setup, include=FALSE}
 library(flexdashboard)
 library(tidyverse)
-library(ggridges)
-library(ggpubr)
 library(plotly)
-library(reactable)
-
+library(ggpubr)
 
 theme_set(theme_classic())
 
-uo <- read_csv('C:/Users/cpppe/Desktop/github_projects/gradschool_dashboard/do_not_push/data/wide_data.csv') %>% 
-  filter(year == 18) %>% 
-  dplyr::select(-X1)
+uo_years <- function(year){
+  
+  link <- glue::glue("https://raw.githubusercontent.com/jpedroza1228/gradschool_dashboard/main/pushable_data/grouped_data_{year}.csv")
+  
+  rio::import(link, setclass = 'tibble')
+  
+}
 
-uo <- uo %>% 
-  mutate(credit_per_class = credit/headcount,
-         credit_per_full_num = case_when(credit_per_class < 2 ~ 1,
-                                      credit_per_class >= 2 & credit_per_class < 3 ~ 2,
-                                      credit_per_class >= 3 & credit_per_class < 4 ~ 3,
-                                      credit_per_class >= 4 & credit_per_class < 5 ~ 4,
-                                      credit_per_class >= 5 & credit_per_class < 6 ~ 5,
-                                      credit_per_class >= 6 & credit_per_class < 7 ~ 6,
-                                      credit_per_class >= 7 & credit_per_class < 8 ~ 7,
-                                      credit_per_class >= 8 & credit_per_class < 9 ~ 8,
-                                      credit_per_class >= 9 & credit_per_class < 10 ~ 9,
-                                      credit_per_class >= 10 & credit_per_class < 11 ~ 10,
-                                      credit_per_class >= 11 & credit_per_class < 12 ~ 11,
-                                      credit_per_class >= 12 & credit_per_class < 13 ~ 12,
-                                      credit_per_class >= 13 & credit_per_class < 14 ~ 13,
-                                      credit_per_class >= 14 & credit_per_class < 15 ~ 14,
-                                      credit_per_class == 15 ~ 15)) %>% 
-  filter(course_level == 'Undergraduate')
+uo <- map_df(14:19, ~uo_years(.x))
 
-# set.seed(123654)
-# uo <- uo %>%
-#   sample_frac(.01)
 ```
 
 University of Oregon
@@ -52,6 +33,7 @@ Inputs {.sidebar}
 -----------------------------------------------------------------------
 This dashboard is for those in the Graduate School that are interested in the average teaching graduate employment (GE) full-time equivalency (FTE), distribution of various types of GE opportunities across the University of Oregon (UO), and the correlations between GE teaching FTE and student credit hours for the 2018-2019 academic year. 
 
+Summarized data can be found [here](https://github.com/jpedroza1228/gradschool_dashboard/tree/main/pushable_data)
 Synthetic data can be found [here](https://github.com/jpedroza1228/gradschool_dashboard/tree/main/synthetic_data/synthetic_csv)
 
 **Common terms used in all visuals and tables**\n
@@ -77,399 +59,838 @@ FTE = Full-time Equivalency\n
 UO = University of Oregon\n
 
 
-Column {data-width=600}
+Column {data-width=1000}
 -----------------------------------------------------------------------
 
-### Average FTE for GEs Across Colleges & Departments
+### Number of Teaching GEs Across UO Departments
 
 ```{r}
 uo %>% 
-  filter(ge_teach == 1 &
-           college != 'Graduate School') %>% 
-  group_by(course_dept, ge_teach) %>%
-  mutate(mean_fte = mean(ge_teach_fte),
-         mean_fte = round(mean_fte, digits = 3),
-         ge_teach_n = n(),
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") %>% 
+  group_by(year, college, course_dept) %>% 
+  mutate(sum_teach_ge = sum(teach_ge_n),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018",
+                       "19" = "2019"),
          college = recode(college, 'School of Music & Dance' = 'SOMD',
                           'School of Law' = 'LAW',
                           'School of Journalism & Communication' = 'SOJC',
                           'Lundquist College of Business' = 'LCOB',
                           'College of Education' = 'COE',
                           'College of Design' = 'COD',
-                          'College of Arts & Sciences' = 'CAS')) %>%
-  ungroup() %>%
-  ggplot(aes(fct_reorder(course_dept, mean_fte), mean_fte)) +
-  geom_col(position = 'dodge', aes(fill = college)) +
-  # geom_point(aes(color = college)) +
-  geom_text(aes(label = mean_fte), hjust = 1, size = 2.75) +
-  geom_text(aes(label = college, y = .03),
-            position = position_dodge(width = .5),
-            size = 2.75) +
-  scale_y_continuous(limits = c(0, .5),
-                     expand = c(0, 0)) +
-  scale_fill_manual(values = c('#FFF6B7','#8CD4C9', '#F7471A', '#D1E6F2', '#23A1E3', '#AA1818', '#601a35')) +
+                          'College of Arts & Sciences' = 'CAS')) %>% 
+  ungroup() %>% 
+  ggplot(aes(fct_reorder(as.factor(course_dept), college), sum_teach_ge)) +
+  geom_point(aes(color = year)) +
+  # geom_col(position = 'dodge', aes(fill = college), color = "White") +
+  # facet_grid(cols = vars(year)) +
   coord_flip() +
-  labs(title = 'Average Teaching FTE Across Departments at UO',
-       caption = '',
-       x = ' ',
-       y = 'Average GE Teaching FTE') +
-  theme(legend.position = 'none',
-        axis.text.y = element_text(size = 8))
+  scale_y_continuous(limits = c(0, 1200),
+                     expand = c(0, 0)) +
+  scale_color_manual(values = c("#6a1f25", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47", "#F7471A")) +
+  labs(title = "Number of Teaching GEs\nAcross UO Departments",
+       x = "",
+       y = "Number of GEs") +
+  annotate("text", x = 20, y = 1000, label = "2014",
+           color = "#6a1f25", size = 4) +
+    annotate("text", x = 18, y = 1000, label = "2015",
+           color = "#7fb7b7", size = 4) +
+    annotate("text", x = 16, y = 1000, label = "2016",
+           color = "#669b3e", size = 4) +
+    annotate("text", x = 14, y = 1000, label = "2017",
+           color = "#ddca72", size = 4) +
+    annotate("text", x = 12, y = 1000, label = "2018",
+           color = "#7f5d47", size = 4) +
+    annotate("text", x = 10, y = 1000, label = "2019",
+           color = "#F7471A", size = 4) +
+  theme(legend.position = "none",
+        legend.title = element_blank(),
+        axis.text.y = element_text(size = 6))
 
 ```
 
-Column {data-width=400}
------------------------------------------------------------------------
-
-### Density of GEs Across the Colleges
-
-```{r}
-stu <- c('Doctoral' = '#669b3e', 'Law' = '#398b98', 'Masters' = '#ea5227')
-
-uo %>%
-  filter(ge == 1) %>% 
-  pivot_longer(cols = c(5, 7, 9, 11),
-               names_to = 'fte_ge',
-               values_to = 'amount_fte') %>% 
-    filter(fte_ge == 'ge_admin_fte' |
-           fte_ge == 'ge_rsch_fte' |
-           fte_ge == 'ge_teach_fte') %>% 
-  mutate(college = recode(college, 'School of Music & Dance' = 'SOMD',
-                          'School of Law' = 'LAW',
-                          'School of Journalism & Communication' = 'SOJC',
-                          'Lundquist College of Business' = 'LCOB',
-                          'College of Education' = 'COE',
-                          'College of Design' = 'COD',
-                          'College of Arts & Sciences' = 'CAS'),
-         fte_ge = recode(fte_ge, 'ge_admin_fte' = 'Administration GE',
-                         'ge_rsch_fte' = 'Research GE',
-                         'ge_teach_fte' = 'Teaching GE')) %>% 
-  drop_na(college, student_level) %>% 
-  ggplot(aes(x = amount_fte, y = college, fill = student_level)) +
-  geom_density_ridges(alpha = .3, color = 'gray70', scale = .9) +
-  facet_wrap(~fte_ge, ncol = 3) +
-  scale_x_continuous(breaks = c(.2, .4, .49),
-                     limits = c(.1, .60)) +
-  geom_vline(linetype = 1, xintercept = .2, size = .5, alpha = .5) +
-  geom_vline(linetype = 2, xintercept = .4, size = .5, alpha = .5) +
-  geom_vline(linetype = 3, xintercept = .49, size = .5, alpha = .5) +
-  labs(x = 'Amount of GEs at varying FTE',
-       y = ' ',
-       fill = 'Student Level',
-       title = 'Density of Different GE types by College',
-       caption = 'Note. .2, .4, and .49 are the most common GE FTE values') +
-  scale_fill_manual(values = stu) +
-  theme(legend.position = 'bottom')
-```
-
-
-Colleges
+Findings
 =======================================================================
 
 Column {.tabset}
 -----------------------------------------------------------------------
 
-### College of Arts & Sciences
+### Undergraduate Course Credits Across Departments
 
 ```{r}
-cas_p_static <- uo %>% 
-  filter(college == 'College of Arts & Sciences' &
-           ge_teach_fte < .5) %>% 
-  drop_na(ge_teach_fte, credit) %>% 
-  ggplot(aes(ge_teach_fte, credit)) +
-  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1) +
-  theme(legend.position = 'none') +
-  scale_color_manual(values = c('#5e2228', '#d22a2c', '#9b2a30', '#c80010',
-                     '#6a1f25', '#d72d2b', '#5b2c2f', '#387448',
-                     '#c0c5ba', '#888980', '#344039', '#4f4c3c',
-                     '#807f67', '#386350', '#387448', '#5b6242',
-                     '#669b3e', '#808572', '#7fb7b7', '#53636b',
-                     '#85b3c1', '#507b8b', '#2c6195', '#4b5f71',
-                     '#4b5f71', '#3f6698', '#26657f', '#398b98',
-                     '#ddca72', '#c3b37d', '#d3bb95', '#c4bb9b',
-                     '#a26540',
-                     '#dbd5a5', '#a86428', '#c7a860', '#c0cc56',
-                     '#e5e1d4', '#d3bb95', '#a26540', '#ead568',
-                     '#7f5d47', '#b23a2d', '#c33431', 'd74122',
-                     '#b23a2d'))
 
-cas_plot_static <- ggplotly(cas_p_static) %>% 
-                    partial_bundle() %>% 
-                    toWebGL()
+dept_year <- uo %>% 
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c('remove', 'year', 'actual_term'), sep = '0') %>% 
+              ggplot(aes(as.factor(full_term), mean_credit)) +
+              geom_line(aes(color = course_dept, group = course_dept)) +
+              geom_point(alpha = .5, aes(color = course_dept)) +
+              scale_x_discrete(breaks = c(201401, 201402, 201403,
+                                          201501, 201502, 201503,
+                                          201601, 201602, 201603,
+                                          201701, 201702, 201703,
+                                          201801, 201802, 201803,
+                                          201901, 201902, 201903),
+                               label = c("F14", "W14", "S14",
+                                         "F15", "W15", "S15",
+                                         "F16", "W16", "S16",
+                                         "F17", "W17", "S17",
+                                         "F18", "W18", "S18",
+                                         "F19", "W19", "S19"))  +
+  labs(title = "Undergraduate Course Credits Over Time",
+       subtitle = "Click on the department in the legend to view one department",
+       x = "Academic Term",
+       y = "Average Undergraduate Credit Hours") +
+  theme(legend.title = element_blank())
 
-cas_p <- uo %>% 
-  filter(college == 'College of Arts & Sciences' &
-           ge_teach_fte < .5) %>% 
-  drop_na(ge_teach_fte, credit) %>% 
-  ggplot(aes(ge_teach_fte, credit)) +
-  # geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1) +
-  theme(legend.position = 'none') +
-  scale_color_manual(values = c('#5e2228', '#d22a2c', '#9b2a30', '#c80010',
-                                '#6a1f25', '#d72d2b', '#5b2c2f', '#387448',
-                                '#c0c5ba', '#888980', '#344039', '#4f4c3c',
-                                '#807f67', '#386350', '#387448', '#5b6242',
-                                '#669b3e', '#808572', '#7fb7b7', '#53636b',
-                                '#85b3c1', '#507b8b', '#2c6195', '#4b5f71',
-                                '#4b5f71', '#3f6698', '#26657f', '#398b98',
-                                '#ddca72', '#c3b37d', '#d3bb95', '#c4bb9b',
-                                '#a26540',
-                                '#dbd5a5', '#a86428', '#c7a860', '#c0cc56',
-                                '#e5e1d4', '#d3bb95', '#a26540', '#ead568',
-                                '#7f5d47', '#b23a2d', '#c33431', 'd74122',
-                                '#b23a2d'))
-
-cas_plot <- ggplotly(cas_p) %>% 
+dept_year_plot <- ggplotly(dept_year) %>% 
   partial_bundle() %>% 
   toWebGL()
 
-subplot(cas_plot_static, cas_plot, nrows = 2)
+dept_year_plot
 
 ```
 
-### College of Design
+### Teaching GE Allocation Across Departments
 
 ```{r}
+dept_year_ge <- uo %>% 
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c('remove', 'year', 'actual_term'), sep = '0') %>% 
+  ggplot(aes(as.factor(full_term), teach_ge_n)) +
+  geom_line(aes(color = course_dept, group = course_dept)) +
+  geom_point(alpha = .5, aes(color = course_dept)) +
+  scale_x_discrete(breaks = c(201401, 201402, 201403,
+                              201501, 201502, 201503,
+                              201601, 201602, 201603,
+                              201701, 201702, 201703,
+                              201801, 201802, 201803,
+                              201901, 201902, 201903),
+                   label = c("F14", "W14", "S14",
+                             "F15", "W15", "S15",
+                             "F16", "W16", "S16",
+                             "F17", "W17", "S17",
+                             "F18", "W18", "S18",
+                             "F19", "W19", "S19")) +
+  labs(title = "Teaching GE Allocation Over Time",
+       subtitle = "Click on the department in the legend to view one department",
+       x = "Academic Term",
+       y = "Number of Teaching GEs For Each Department") +
+  theme(legend.title = element_blank())
 
-cod_major <- c('Architecture' = '#FFF6B7',
-               'Art' = '#8CD4C9',
-               'Art History' = '#F7471A',
-               'Historic Preservation' = '#D1E6F2',
-               'Interior Architecture' = '#23A1E3',
-               'Landscape Architecture' = '#AA1818',
-               'Product Design' = '#601a35')
+dept_year_plot_ge <- ggplotly(dept_year_ge) %>% 
+  partial_bundle() %>% 
+  toWebGL()
 
-# make sure colors match for both plots
-cod1 <- uo %>% 
-  filter(college == 'College of Design' &
-           ge_teach_fte < .5) %>%
-  drop_na(ge_teach_fte, credit) %>% 
-  ggplot(aes(ge_teach_fte, credit)) +
-  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
-  scale_colour_manual(name = "course_dept",values = cod_major) +
-  xlim(0.0, .5) +
-  labs(x = 'GE Teaching FTE',
-       y = ' ') +
-  guides(colour = guide_legend(nrow = 3)) +
-  theme(legend.title = element_blank(),
-        legend.position = 'bottom')
-
-cod2 <- uo %>% 
-  filter(college == 'College of Design' &
-           ge_teach_fte < .5) %>%
-  drop_na(ge_teach_fte, credit) %>% 
-  ggplot(aes(ge_teach_fte, credit)) +
-  # geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
-  scale_colour_manual(name = "course_dept",values = cod_major) +
-  xlim(0.0, .5)  +
-    labs(x = 'GE Teaching FTE',
-       y = ' ') +
-  theme(legend.position = 'none')
-
-cod_figure <- ggarrange(cod1, cod2, common.legend = FALSE, nrow = 2)
-
-annotate_figure(cod_figure,
-                top = text_grob('Association between GE Teaching FTE and Undergraduate Credit Hours \n For College of Design'),
-                left = text_grob('Undergraduate Credit Hours' , rot = 90))
-
+dept_year_plot_ge
 ```
 
-### College of Education
-
-```{r}
-
-coe_major <- c('Counseling Psychology & Human Services' = '#669b3e',
-               'Education Studies' = '#d72d2b',
-               'Educational Methodology, Policy, & Leadership' = '#398b98',
-               'Special Education & Clinical Sciences' = '#ea5227')
-
-# make sure colors match for both plots
-coe1 <- uo %>% 
-  filter(college == 'College of Education' &
-           ge_teach_fte < .5) %>% 
-  drop_na(ge_teach_fte, credit) %>% 
-  ggplot(aes(ge_teach_fte, credit)) +
-  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
-  scale_color_manual(values = coe_major) +
-  xlim(0.0, .5) +
-  labs(x = 'GE Teaching FTE',
-       y = ' ') +
-  guides(colour = guide_legend(nrow = 2)) +
-  theme(legend.title = element_blank(),
-        legend.position = 'bottom')
-
-coe2 <- uo %>% 
-  filter(college == 'College of Education' &
-           ge_teach_fte < .5) %>% 
-  drop_na(ge_teach_fte, credit) %>% 
-  ggplot(aes(ge_teach_fte, credit)) +
-  # geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
-  scale_color_manual(values = coe_major) +
-  xlim(0.0, .5) +
-    labs(x = 'GE Teaching FTE',
-       y = ' ')  +
-  theme(legend.position = 'none')
-
-coe_figure <- ggarrange(coe1, coe2, common.legend = FALSE, nrow = 2)
-
-annotate_figure(coe_figure,
-                top = text_grob('Association between GE Teaching FTE and Undergraduate Credit Hours \n For College of Education'),
-                left = text_grob('Undergraduate Credit Hours' , rot = 90))
-
-```
-
-### Lundquist College of Business
-
-```{r}
-
-uo %>% 
-  filter(college == 'Lundquist College of Business' &
-           ge_teach_fte < .5) %>% 
-  drop_na(ge_teach_fte, credit) %>% 
-  ggplot(aes(ge_teach_fte, credit)) +
-  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
-  xlim(0.0, .5) +
-  scale_color_manual(values = c('#398b98')) +
-  # annotate('text', x = .2, y = 130, label = 'Business Administration') +
-  labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
-       subtitle = 'for Business Administration',
-       x = 'GE Teaching FTE',
-       y = 'Undergraduate Credit Hours') +
-    theme(legend.position = 'none')
-
-```
-
-### School of Journalism & Communication
-
-```{r}
-
-uo %>% 
-  filter(college == 'School of Journalism & Communication' &
-           ge_teach_fte < .5) %>% 
-  drop_na(ge_teach_fte, credit) %>% 
-  ggplot(aes(ge_teach_fte, credit)) +
-  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
-  labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
-       subtitle = 'for Journalism',
-       x = 'GE Teaching FTE',
-       y = 'Undergraduate Credit Hours') +
-  theme(legend.position = 'none') +
-  scale_color_manual(values = c('#398b98'))
-
-```
-
-### School of Law
-
-```{r}
-uo %>% 
-  filter(college == 'School of Law' &
-           ge_teach_fte < .5) %>% 
-  drop_na(ge_teach_fte, credit) %>% 
-  ggplot(aes(ge_teach_fte, credit)) +
-  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
-  labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
-       subtitle = 'for Law',
-       x = 'GE Teaching FTE',
-       y = 'Undergraduate Credit Hours') +
-  theme(legend.position = 'none') +
-  scale_color_manual(values = c('#398b98'))
-
-```
-
-### School of Music & Dance
-
-```{r}
-
-uo %>% 
-  filter(college == 'School of Music & Dance' &
-           ge_teach_fte < .5) %>% 
-  drop_na(ge_teach_fte, credit) %>% 
-  ggplot(aes(ge_teach_fte, credit)) +
-  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
-  labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
-       subtitle = 'for Music',
-       x = 'GE Teaching FTE',
-       y = 'Undergraduate Credit Hours') +
-  theme(legend.position = 'none') +
-  scale_color_manual(values = c('#398b98'))
-
-```
-
-Column 
+Column {.tabset}
 -----------------------------------------------------------------------
 
-### Average GE Teaching FTE & Undergraduate Course Credits
+### 2014 FTE & Credits
 
 ```{r}
 
 uo %>% 
-  filter(ge_teach == 1) %>% 
-  drop_na(ge_teach, ge_teach_fte, credit, fte) %>% 
-  group_by(college, course_dept, ge_teach) %>%
-  summarize(mean_fte = mean(ge_teach_fte),
-         `GE Teaching Observations` = n(),
-         mean_credit = mean(credit),
-         mean_class_fte = mean(fte),
-         `Average GE Teaching FTE` = round(mean_fte, 3),
-         `Average Student Credit Hours` = round(mean_credit, 3),
-         `Average Student Class FTE` = round(mean_class_fte, 3)) %>% 
-  rename(College = college,
-         `Course Department` = course_dept) %>% 
-  ungroup() %>% 
-  dplyr::select(College, `Course Department`, `GE Teaching Observations`, `Average GE Teaching FTE`,
-                `Average Student Class FTE`, `Average Student Credit Hours`) %>% 
-  reactable::reactable()
-
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") %>% 
+  mutate(full_term = recode(full_term, "201401" = "F14",
+                            "201402" = "W14",
+                            "201403" = "S14",
+                            "201501" = "F15",
+                            "201502" = "W15",
+                            "201503" = "S15",
+                            "201601" = "F16",
+                            "201602" = "W16",
+                            "201603" = "S16",
+                            "201701" = "F17",
+                            "201702" = "W17",
+                            "201703" = "S17",
+                            "201801" = "F18",
+                            "201802" = "W18",
+                            "201803" = "S18",
+                            "201901" = "F19",
+                            "201902" = "W19",
+                            "201903" = "S19"),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018",
+                       "19" = "2019"),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) %>% 
+  filter(year == "2014") %>% 
+  ggplot(aes(teach_ge_fte, mean_credit)) +
+  geom_jitter(aes(color = as.factor(full_term))) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
+  stat_regline_equation() +
+  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
+  labs(title = "Scatterplot of Teaching GEs' FTE and Average Undergraduate Course Credit",
+       x = "GE Teaching FTE",
+       y = "Average Course Credits") +
+  theme(legend.position = "none")
 ```
 
-### Correlation Between Teaching GE FTE & Undergraduate Course FTE
+### 2015 FTE & Credits
 
 ```{r}
-beta_func <- function (object){
-    if (!"lm" %in% attr(object, "class")) 
-        stop("object has to be of class lm")
-    object$standardized.coefficients <- coef(object) * apply(as.matrix(model.matrix(object)), 
-        2, function(x) sqrt(sum((x - mean(x, na.rm = T) * attr(attr(object$model, 
-            "terms"), "intercept"))^2, na.rm = T)))/apply(as.matrix(model.frame(object)[, 
-        1]), 2, function(x) sqrt(sum((x - mean(x, na.rm = T) * 
-        attr(attr(object$model, "terms"), "intercept"))^2, 
-        na.rm = T)))
-    # attr(object, "class") <- c("lm.beta", "lm")
-    return(object)
-}
-
-wide_lm_list <- uo %>% 
-  drop_na(college, course_dept, credit, ge_teach_fte) %>% 
-  group_by(college, course_dept) %>% 
-  nest() %>% 
-  mutate(lm_model = map(data, ~lm(credit ~ ge_teach_fte, data = .x)),
-         lm_coefs = map(lm_model, coef),
-         ge_teach_fte_b = map_dbl(lm_coefs, 2),
-         betas = map_dbl(lm_model, ~beta_func(.x)$standardized.coefficients[2]),
-         lm_r2 = map_dbl(lm_model, ~summary(.x)$r.squared),
-         lm_pvalue = map_dbl(lm_model, ~summary(.x)$coefficients[, 4]['ge_teach_fte']),
-         lm_r = map_dbl(lm_r2, ~sqrt(.x)))
-
-wide_lm_list %>% 
-  dplyr::select(college, course_dept, ge_teach_fte_b, betas, lm_pvalue) %>% 
-  rename(`College` = college,
-         `Course Department` = course_dept) %>% 
-  mutate(
-    b = round(ge_teach_fte_b, digits = 3),
-         "\u03b2" = round(betas, digits = 3), 
-         `p value` = round(lm_pvalue, digits = 3)) %>% 
-  dplyr::select(
-    -ge_teach_fte_b,
-    -lm_pvalue, -betas) %>% 
-  reactable::reactable()
+uo %>% 
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") %>% 
+  mutate(full_term = recode(full_term, "201401" = "F14",
+                            "201402" = "W14",
+                            "201403" = "S14",
+                            "201501" = "F15",
+                            "201502" = "W15",
+                            "201503" = "S15",
+                            "201601" = "F16",
+                            "201602" = "W16",
+                            "201603" = "S16",
+                            "201701" = "F17",
+                            "201702" = "W17",
+                            "201703" = "S17",
+                            "201801" = "F18",
+                            "201802" = "W18",
+                            "201803" = "S18",
+                            "201901" = "F19",
+                            "201902" = "W19",
+                            "201903" = "S19"),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018",
+                       "19" = "2019"),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) %>% 
+  filter(year == "2015") %>% 
+  ggplot(aes(teach_ge_fte, mean_credit)) +
+  geom_jitter(aes(color = as.factor(full_term))) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
+  stat_regline_equation() +
+  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
+  labs(title = "Scatterplot of Teaching GEs' FTE and Average Undergraduate Course Credit",
+       x = "GE Teaching FTE",
+       y = "Average Course Credits") +
+  theme(legend.position = "none")
 ```
+
+### 2016 FTE & Credits
+
+```{r}
+uo %>% 
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") %>% 
+  mutate(full_term = recode(full_term, "201401" = "F14",
+                            "201402" = "W14",
+                            "201403" = "S14",
+                            "201501" = "F15",
+                            "201502" = "W15",
+                            "201503" = "S15",
+                            "201601" = "F16",
+                            "201602" = "W16",
+                            "201603" = "S16",
+                            "201701" = "F17",
+                            "201702" = "W17",
+                            "201703" = "S17",
+                            "201801" = "F18",
+                            "201802" = "W18",
+                            "201803" = "S18",
+                            "201901" = "F19",
+                            "201902" = "W19",
+                            "201903" = "S19"),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018",
+                       "19" = "2019"),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) %>% 
+  filter(year == "2016") %>% 
+  ggplot(aes(teach_ge_fte, mean_credit)) +
+  geom_jitter(aes(color = as.factor(full_term))) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
+  stat_regline_equation() +
+  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
+  labs(title = "Scatterplot of Teaching GEs' FTE and Average Undergraduate Course Credit",
+       x = "GE Teaching FTE",
+       y = "Average Course Credits") +
+  theme(legend.position = "none")
+```
+
+### 2017 FTE & Credits
+
+```{r}
+uo %>% 
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") %>% 
+  mutate(full_term = recode(full_term, "201401" = "F14",
+                            "201402" = "W14",
+                            "201403" = "S14",
+                            "201501" = "F15",
+                            "201502" = "W15",
+                            "201503" = "S15",
+                            "201601" = "F16",
+                            "201602" = "W16",
+                            "201603" = "S16",
+                            "201701" = "F17",
+                            "201702" = "W17",
+                            "201703" = "S17",
+                            "201801" = "F18",
+                            "201802" = "W18",
+                            "201803" = "S18",
+                            "201901" = "F19",
+                            "201902" = "W19",
+                            "201903" = "S19"),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018",
+                       "19" = "2019"),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) %>% 
+  filter(year == "2017") %>% 
+  ggplot(aes(teach_ge_fte, mean_credit)) +
+  geom_jitter(aes(color = as.factor(full_term))) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
+  stat_regline_equation() +
+  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
+  labs(title = "Scatterplot of Teaching GEs' FTE and Average Undergraduate Course Credit",
+       x = "GE Teaching FTE",
+       y = "Average Course Credits") +
+  theme(legend.position = "none")
+```
+
+### 2018 FTE & Credits
+
+```{r}
+uo %>% 
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") %>% 
+  mutate(full_term = recode(full_term, "201401" = "F14",
+                            "201402" = "W14",
+                            "201403" = "S14",
+                            "201501" = "F15",
+                            "201502" = "W15",
+                            "201503" = "S15",
+                            "201601" = "F16",
+                            "201602" = "W16",
+                            "201603" = "S16",
+                            "201701" = "F17",
+                            "201702" = "W17",
+                            "201703" = "S17",
+                            "201801" = "F18",
+                            "201802" = "W18",
+                            "201803" = "S18",
+                            "201901" = "F19",
+                            "201902" = "W19",
+                            "201903" = "S19"),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018",
+                       "19" = "2019"),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) %>% 
+  filter(year == "2018") %>% 
+  ggplot(aes(teach_ge_fte, mean_credit)) +
+  geom_jitter(aes(color = as.factor(full_term))) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
+  stat_regline_equation() +
+  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
+  labs(title = "Scatterplot of Teaching GEs' FTE and Average Undergraduate Course Credit",
+       x = "GE Teaching FTE",
+       y = "Average Course Credits") +
+  theme(legend.position = "none")
+```
+
+### 2019 FTE & Credits
+
+```{r}
+uo %>% 
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") %>% 
+  mutate(full_term = recode(full_term, "201401" = "F14",
+                            "201402" = "W14",
+                            "201403" = "S14",
+                            "201501" = "F15",
+                            "201502" = "W15",
+                            "201503" = "S15",
+                            "201601" = "F16",
+                            "201602" = "W16",
+                            "201603" = "S16",
+                            "201701" = "F17",
+                            "201702" = "W17",
+                            "201703" = "S17",
+                            "201801" = "F18",
+                            "201802" = "W18",
+                            "201803" = "S18",
+                            "201901" = "F19",
+                            "201902" = "W19",
+                            "201903" = "S19"),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018",
+                       "19" = "2019"),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) %>% 
+  filter(year == "2019") %>% 
+  ggplot(aes(teach_ge_fte, mean_credit)) +
+  geom_jitter(aes(color = as.factor(full_term))) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
+  stat_regline_equation() +
+  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
+  labs(title = "Scatterplot of Teaching GEs' FTE and Average Undergraduate Course Credit",
+       x = "GE Teaching FTE",
+       y = "Average Course Credits") +
+  theme(legend.position = "none")
+```
+
+### 2014 Number of GEs & Credits
+
+```{r}
+uo %>% 
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") %>% 
+  mutate(full_term = recode(full_term, "201401" = "F14",
+                            "201402" = "W14",
+                            "201403" = "S14",
+                            "201501" = "F15",
+                            "201502" = "W15",
+                            "201503" = "S15",
+                            "201601" = "F16",
+                            "201602" = "W16",
+                            "201603" = "S16",
+                            "201701" = "F17",
+                            "201702" = "W17",
+                            "201703" = "S17",
+                            "201801" = "F18",
+                            "201802" = "W18",
+                            "201803" = "S18",
+                            "201901" = "F19",
+                            "201902" = "W19",
+                            "201903" = "S19"),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018",
+                       "19" = "2019"),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) %>% 
+  filter(year == "2014") %>% 
+  ggplot(aes(teach_ge_n, mean_credit)) +
+  geom_jitter(aes(color = as.factor(full_term))) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
+  stat_regline_equation() +
+  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
+  labs(title = "Scatterplot of Number of Teaching GEs and Average Undergraduate Course Credit",
+       x = "Number of Teaching GEs",
+       y = "Average Course Credits") +
+  theme(legend.position = "none")
+```
+
+### 2015 Number of GEs & Credits
+
+```{r}
+uo %>% 
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") %>% 
+  mutate(full_term = recode(full_term, "201401" = "F14",
+                            "201402" = "W14",
+                            "201403" = "S14",
+                            "201501" = "F15",
+                            "201502" = "W15",
+                            "201503" = "S15",
+                            "201601" = "F16",
+                            "201602" = "W16",
+                            "201603" = "S16",
+                            "201701" = "F17",
+                            "201702" = "W17",
+                            "201703" = "S17",
+                            "201801" = "F18",
+                            "201802" = "W18",
+                            "201803" = "S18",
+                            "201901" = "F19",
+                            "201902" = "W19",
+                            "201903" = "S19"),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018",
+                       "19" = "2019"),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) %>% 
+  filter(year == "2015") %>% 
+  ggplot(aes(teach_ge_n, mean_credit)) +
+  geom_jitter(aes(color = as.factor(full_term))) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
+  stat_regline_equation() +
+  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
+  labs(title = "Scatterplot of Number of Teaching GEs and Average Undergraduate Course Credit",
+       x = "Number of Teaching GEs",
+       y = "Average Course Credits") +
+  theme(legend.position = "none")
+```
+
+### 2016 Number of GEs & Credits
+
+```{r}
+uo %>% 
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") %>% 
+  mutate(full_term = recode(full_term, "201401" = "F14",
+                            "201402" = "W14",
+                            "201403" = "S14",
+                            "201501" = "F15",
+                            "201502" = "W15",
+                            "201503" = "S15",
+                            "201601" = "F16",
+                            "201602" = "W16",
+                            "201603" = "S16",
+                            "201701" = "F17",
+                            "201702" = "W17",
+                            "201703" = "S17",
+                            "201801" = "F18",
+                            "201802" = "W18",
+                            "201803" = "S18",
+                            "201901" = "F19",
+                            "201902" = "W19",
+                            "201903" = "S19"),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018",
+                       "19" = "2019"),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) %>% 
+  filter(year == "2016") %>% 
+  ggplot(aes(teach_ge_n, mean_credit)) +
+  geom_jitter(aes(color = as.factor(full_term))) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
+  stat_regline_equation() +
+  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
+  labs(title = "Scatterplot of Number of Teaching GEs and Average Undergraduate Course Credit",
+       x = "Number of Teaching GEs",
+       y = "Average Course Credits") +
+  theme(legend.position = "none")
+```
+
+### 2017 Number of GEs & Credits
+
+```{r}
+uo %>% 
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") %>% 
+  mutate(full_term = recode(full_term, "201401" = "F14",
+                            "201402" = "W14",
+                            "201403" = "S14",
+                            "201501" = "F15",
+                            "201502" = "W15",
+                            "201503" = "S15",
+                            "201601" = "F16",
+                            "201602" = "W16",
+                            "201603" = "S16",
+                            "201701" = "F17",
+                            "201702" = "W17",
+                            "201703" = "S17",
+                            "201801" = "F18",
+                            "201802" = "W18",
+                            "201803" = "S18",
+                            "201901" = "F19",
+                            "201902" = "W19",
+                            "201903" = "S19"),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018",
+                       "19" = "2019"),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) %>% 
+  filter(year == "2017") %>% 
+  ggplot(aes(teach_ge_n, mean_credit)) +
+  geom_jitter(aes(color = as.factor(full_term))) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
+  stat_regline_equation() +
+  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
+  labs(title = "Scatterplot of Number of Teaching GEs and Average Undergraduate Course Credit",
+       x = "Number of Teaching GEs",
+       y = "Average Course Credits") +
+  theme(legend.position = "none")
+```
+
+### 2018 Number of GEs & Credits
+
+```{r}
+uo %>% 
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") %>% 
+  mutate(full_term = recode(full_term, "201401" = "F14",
+                            "201402" = "W14",
+                            "201403" = "S14",
+                            "201501" = "F15",
+                            "201502" = "W15",
+                            "201503" = "S15",
+                            "201601" = "F16",
+                            "201602" = "W16",
+                            "201603" = "S16",
+                            "201701" = "F17",
+                            "201702" = "W17",
+                            "201703" = "S17",
+                            "201801" = "F18",
+                            "201802" = "W18",
+                            "201803" = "S18",
+                            "201901" = "F19",
+                            "201902" = "W19",
+                            "201903" = "S19"),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018",
+                       "19" = "2019"),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) %>% 
+  filter(year == "2018") %>% 
+  ggplot(aes(teach_ge_n, mean_credit)) +
+  geom_jitter(aes(color = as.factor(full_term))) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
+  stat_regline_equation() +
+  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
+  labs(title = "Scatterplot of Number of Teaching GEs and Average Undergraduate Course Credit",
+       x = "Number of Teaching GEs",
+       y = "Average Course Credits") +
+  theme(legend.position = "none")
+```
+
+### 2019 Number of GEs & Credits
+
+```{r}
+uo %>% 
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") %>% 
+  mutate(full_term = recode(full_term, "201401" = "F14",
+                            "201402" = "W14",
+                            "201403" = "S14",
+                            "201501" = "F15",
+                            "201502" = "W15",
+                            "201503" = "S15",
+                            "201601" = "F16",
+                            "201602" = "W16",
+                            "201603" = "S16",
+                            "201701" = "F17",
+                            "201702" = "W17",
+                            "201703" = "S17",
+                            "201801" = "F18",
+                            "201802" = "W18",
+                            "201803" = "S18",
+                            "201901" = "F19",
+                            "201902" = "W19",
+                            "201903" = "S19"),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018",
+                       "19" = "2019"),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) %>% 
+  filter(year == "2019") %>% 
+  ggplot(aes(teach_ge_n, mean_credit)) +
+  geom_jitter(aes(color = as.factor(full_term))) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
+  stat_regline_equation() +
+  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
+  labs(title = "Scatterplot of Number of Teaching GEs and Average Undergraduate Course Credit",
+       x = "Number of Teaching GEs",
+       y = "Average Course Credits") +
+  theme(legend.position = "none")
+```
+
+Column {.tabset}
+-----------------------------------------------------------------------
+
+### Growth Models
+
+```{r}
+library(sjPlot)
+library(lme4)
+library(lmerTest)
+
+intercept_model <- lmer(mean_credit ~ full_term + (1 | college) + (1 | college:course_dept), data = uo)
+ge_n_model <- lmer(mean_credit ~ full_term + teach_ge_n + (1 | college) + (1 | college:course_dept), data = uo)
+ge_fte_model <- lmer(mean_credit ~ full_term + teach_ge_fte + (1 | college) + (1 | college:course_dept), data = uo)
+
+tab_model(intercept_model, ge_n_model, ge_fte_model)
+
+```
+
+### FTE & Credits
+
+```{r}
+uo %>% 
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") %>% 
+  mutate(full_term = recode(full_term, "201401" = "F14",
+                            "201402" = "W14",
+                            "201403" = "S14",
+                            "201501" = "F15",
+                            "201502" = "W15",
+                            "201503" = "S15",
+                            "201601" = "F16",
+                            "201602" = "W16",
+                            "201603" = "S16",
+                            "201701" = "F17",
+                            "201702" = "W17",
+                            "201703" = "S17",
+                            "201801" = "F18",
+                            "201802" = "W18",
+                            "201803" = "S18",
+                            "201901" = "F19",
+                            "201902" = "W19",
+                            "201903" = "S19"),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018",
+                       "19" = "2019"),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) %>% 
+  ggplot(aes(teach_ge_fte, mean_credit)) +
+  geom_jitter(aes(color = as.factor(full_term))) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
+  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
+  labs(title = "Scatterplot of Teaching GEs' FTE and Average Undergraduate Course Credit",
+       x = "GE Teaching FTE",
+       y = "Average Course Credits") +
+  theme(legend.position = "none")
+```
+
+### Number of GEs & Credits
+
+```{r}
+uo %>% 
+  mutate(term = full_term) %>% 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") %>% 
+  mutate(full_term = recode(full_term, "201401" = "F14",
+                            "201402" = "W14",
+                            "201403" = "S14",
+                            "201501" = "F15",
+                            "201502" = "W15",
+                            "201503" = "S15",
+                            "201601" = "F16",
+                            "201602" = "W16",
+                            "201603" = "S16",
+                            "201701" = "F17",
+                            "201702" = "W17",
+                            "201703" = "S17",
+                            "201801" = "F18",
+                            "201802" = "W18",
+                            "201803" = "S18",
+                            "201901" = "F19",
+                            "201902" = "W19",
+                            "201903" = "S19"),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018",
+                       "19" = "2019"),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) %>% 
+  ggplot(aes(teach_ge_n, mean_credit)) +
+  geom_jitter(aes(color = as.factor(full_term))) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
+  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
+  labs(title = "Scatterplot of Number of Teaching GEs and Average Undergraduate Course Credit",
+       x = "Number of Teaching GEs",
+       y = "Average Course Credits") +
+  theme(legend.position = "none")
+```
+
 
