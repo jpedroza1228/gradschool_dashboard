@@ -1,84 +1,84 @@
 "","course_dept","full_term","college","teach_ge_n","teach_ge_fte","mean_credit","total_credit"
-"1","Anthropology",201901,"College of Arts & Sciences",5704,0.482258064516129,51.3858695652174,293105
-"2","Anthropology",201902,"College of Arts & Sciences",4920,0.481666666666667,60.4573170731707,297450
-"3","Architecture",201901,"College of Design",2940,0.414,37.3673469387755,109860
-"4","Architecture",201902,"College of Design",4077,0.415185185185185,34.7615894039735,141723
-"5","Art",201901,"College of Design",4100,0.49,27.790243902439,113940
-"6","Art",201902,"College of Design",4380,0.49,27.7945205479452,121740
-"7","Art History",201901,"College of Design",675,0.43,34.3066666666667,23157
-"8","Art History",201902,"College of Design",720,0.43,32.825,23634
-"9","Asian Studies",201901,"College of Arts & Sciences",72,0.445,14.6666666666667,1056
-"10","Asian Studies",201902,"College of Arts & Sciences",66,0.415,18.5454545454545,1224
-"11","Biology",201901,"College of Arts & Sciences",8155,0.451142857142857,33.5708154506438,273770
-"12","Biology",201902,"College of Arts & Sciences",9618,0.450952380952381,32.471615720524,312312
-"13","Business Administration",201901,"Lundquist College of Business",694,0.49,91.9048991354467,63782
-"14","Business Administration",201902,"Lundquist College of Business",355,0.49,86.8507042253521,30832
-"15","Chemistry",201901,"College of Arts & Sciences",13020,0.4625,52.7188940092166,686400
-"16","Chemistry",201902,"College of Arts & Sciences",7755,0.461914893617021,58.8181818181818,456135
-"17","Classics",201901,"College of Arts & Sciences",138,0.445,30.6521739130435,4230
-"18","Classics",201902,"College of Arts & Sciences",110,0.445,22.2909090909091,2452
-"19","Comparative Literature",201901,"College of Arts & Sciences",1400,0.4585,30.0428571428571,42060
-"20","Comparative Literature",201902,"College of Arts & Sciences",1596,0.46,26.3421052631579,42042
-"21","Computer & Information Science",201901,"College of Arts & Sciences",4592,0.451428571428571,37.5243902439024,172312
-"22","Computer & Information Science",201902,"College of Arts & Sciences",4896,0.452352941176471,41.0555555555556,201008
-"23","Counseling Psychology & Human Services",201901,"College of Education",4488,0.483333333333333,37.2794117647059,167310
-"24","Counseling Psychology & Human Services",201902,"College of Education",4386,0.480882352941176,44.3565891472868,194548
-"25","Creative Writing",201901,"College of Arts & Sciences",1520,0.4855,18.0131578947368,27380
-"26","Creative Writing",201902,"College of Arts & Sciences",1729,0.49,14.3846153846154,24871
-"27","E Asian Languages & Literature",201901,"College of Arts & Sciences",5670,0.46,16.0285714285714,90882
-"28","E Asian Languages & Literature",201902,"College of Arts & Sciences",5396,0.452105263157895,15.5985915492958,84170
-"29","Earth Sciences",201901,"College of Arts & Sciences",4158,0.49,36.1753246753247,150417
-"30","Earth Sciences",201902,"College of Arts & Sciences",6084,0.49,33.9358974358974,206466
-"31","Economics",201901,"College of Arts & Sciences",12240,0.485625,47.3490196078431,579552
-"32","Economics",201902,"College of Arts & Sciences",11472,0.49,53.6359832635983,615312
-"33","Education Studies",201901,"College of Education",1261,0.466153846153846,39.1546391752577,49374
-"34","Education Studies",201902,"College of Education",1066,0.443846153846154,46.9268292682927,50024
-"35","Educational Methodology, Policy, & Leadership",201901,"College of Education",244,0.37,19.2622950819672,4700
-"36","Educational Methodology, Policy, & Leadership",201902,"College of Education",184,0.37,19.695652173913,3624
-"37","English",201901,"College of Arts & Sciences",29040,0.480625,23.2661157024793,675648
-"38","English",201902,"College of Arts & Sciences",32781,0.480816326530612,23.7309417040359,777924
-"39","Environmental Studies",201901,"College of Arts & Sciences",415,0.43,34.3493975903614,14255
-"40","Environmental Studies",201902,"College of Arts & Sciences",405,0.43,35.7654320987654,14485
-"41","Folklore",201901,"College of Arts & Sciences",150,0.46,15.84,2376
-"42","Folklore",201902,"College of Arts & Sciences",264,0.465,24.4545454545455,6456
-"43","Geography",201901,"College of Arts & Sciences",3484,0.401923076923077,29.8582089552239,104026
-"44","Geography",201902,"College of Arts & Sciences",3266,0.413913043478261,24.6267605633803,80431
-"45","History",201901,"College of Arts & Sciences",5256,0.405833333333333,28.0639269406393,147504
-"46","History",201902,"College of Arts & Sciences",4400,0.404,30.0056818181818,132025
-"47","Human Physiology",201901,"College of Arts & Sciences",2706,0.483939393939394,57.609756097561,155892
-"48","Human Physiology",201902,"College of Arts & Sciences",2211,0.483939393939394,57.6865671641791,127545
-"49","Interior Architecture",201901,"College of Design",38,0.4,25.3421052631579,963
-"50","Interior Architecture",201902,"College of Design",84,0.333333333333333,23.7142857142857,1992
-"51","International Studies",201901,"College of Arts & Sciences",873,0.43,33.360824742268,29124
-"52","International Studies",201902,"College of Arts & Sciences",729,0.42,28.4074074074074,20709
-"53","Journalism",201901,"School of Journalism & Communication",12642,0.411020408163265,79.1976744186046,1001217
-"54","Journalism",201902,"School of Journalism & Communication",12954,0.411176470588235,84.1732283464567,1090380
-"55","Landscape Architecture",201901,"College of Design",792,0.244444444444444,24.8295454545455,19665
-"56","Landscape Architecture",201902,"College of Design",1078,0.254545454545455,19.7959183673469,21340
-"57","Law",201901,"School of Law",880,0.40375,68.4363636363636,60224
-"58","Law",201902,"School of Law",508,0.375,55.5433070866142,28216
-"59","Linguistics",201901,"College of Arts & Sciences",2544,0.4325,20.1635220125786,51296
-"60","Linguistics",201902,"College of Arts & Sciences",2550,0.452941176470588,20.9066666666667,53312
-"61","Mathematics",201901,"College of Arts & Sciences",36036,0.49,38.0549450549451,1371348
-"62","Mathematics",201902,"College of Arts & Sciences",35898,0.489354838709677,30.7374784110535,1103414
-"63","Music",201901,"School of Music & Dance",41785,0.320867213114754,17.3824817518248,726327
-"64","Music",201902,"School of Music & Dance",38796,0.32037868852459,17.9198113207547,695217
-"65","Philosophy",201901,"College of Arts & Sciences",4950,0.426060606060606,35.3066666666667,174768
-"66","Philosophy",201902,"College of Arts & Sciences",6012,0.433888888888889,31.4670658682635,189180
-"67","Physics",201901,"College of Arts & Sciences",10136,0.386428571428571,51.9723756906077,526792
-"68","Physics",201902,"College of Arts & Sciences",7400,0.3908,49.1824324324324,363950
-"69","Political Science",201901,"College of Arts & Sciences",4620,0.418,43.4675324675325,200820
-"70","Political Science",201902,"College of Arts & Sciences",5280,0.418,36.3863636363636,192120
-"71","Product Design",201902,"College of Design",23,0.49,42.9565217391304,988
-"72","Psychology",201901,"College of Arts & Sciences",10865,0.482075471698113,63.5024390243902,689954
-"73","Psychology",201902,"College of Arts & Sciences",13260,0.472916666666667,64.8371040723982,859740
-"74","Romance Languages",201901,"College of Arts & Sciences",21152,0.49,16.3434190620272,345696
-"75","Romance Languages",201902,"College of Arts & Sciences",17806,0.49,15.2589576547231,271701
-"76","Russian, East European, & Eurasian Studies",201901,"College of Arts & Sciences",240,0.49,11.6166666666667,2788
-"77","Russian, East European, & Eurasian Studies",201902,"College of Arts & Sciences",244,0.49,9.81967213114754,2396
-"78","Sociology",201901,"College of Arts & Sciences",5148,0.46969696969697,53.4679487179487,275253
-"79","Sociology",201902,"College of Arts & Sciences",6138,0.476666666666667,46.2311827956989,283767
-"80","Special Education & Clinical Sciences",201901,"College of Education",3768,0.49,30.9044585987261,116448
-"81","Special Education & Clinical Sciences",201902,"College of Education",3984,0.49,26.6506024096386,106176
-"82","Theatre Arts",201901,"College of Arts & Sciences",918,0.45,11.6078431372549,10656
-"83","Theatre Arts",201902,"College of Arts & Sciences",792,0.4675,10.1111111111111,8008
+"1","Anthropology",201901,"College of Arts & Sciences",40,0.49,50.95,2038
+"2","Anthropology",201902,"College of Arts & Sciences",35,0.48,68.8857142857143,2411
+"3","Architecture",201901,"College of Design",87,0.4,26.7816091954023,2330
+"4","Architecture",201902,"College of Design",94,0.3,26.6808510638298,2508
+"5","Art",201901,"College of Design",86,0.49,29.046511627907,2498
+"6","Art",201902,"College of Design",95,0.49,23.8421052631579,2265
+"7","Art History",201901,"College of Design",19,0.49,33.2631578947368,632
+"8","Art History",201902,"College of Design",22,0.49,37.4090909090909,823
+"9","Asian Studies",201901,"College of Arts & Sciences",5,0.4,10.6,53
+"10","Asian Studies",201902,"College of Arts & Sciences",4,0.4,10,40
+"11","Biology",201901,"College of Arts & Sciences",119,0.45,20.4789915966387,2437
+"12","Biology",201902,"College of Arts & Sciences",114,0.45,14.9649122807018,1706
+"13","Business Administration",201901,"Lundquist College of Business",199,0.49,72.9949748743719,14526
+"14","Business Administration",201902,"Lundquist College of Business",211,0.49,77.6919431279621,16393
+"15","Chemistry",201901,"College of Arts & Sciences",96,0.49,35.625,3420
+"16","Chemistry",201902,"College of Arts & Sciences",86,0.46,33.906976744186,2916
+"17","Classics",201901,"College of Arts & Sciences",19,0.49,35.1052631578947,667
+"18","Classics",201902,"College of Arts & Sciences",13,0.49,28.3846153846154,369
+"19","Comparative Literature",201901,"College of Arts & Sciences",15,0.49,59.7333333333333,896
+"20","Comparative Literature",201902,"College of Arts & Sciences",18,0.49,42.0555555555556,757
+"21","Computer & Information Science",201901,"College of Arts & Sciences",49,0.45,26.6326530612245,1305
+"22","Computer & Information Science",201902,"College of Arts & Sciences",43,0.49,13.2790697674419,571
+"23","Counseling Psychology & Human Services",201901,"College of Education",80,0.49,33.25,2660
+"24","Counseling Psychology & Human Services",201902,"College of Education",74,0.49,35.7432432432432,2645
+"25","Creative Writing",201901,"College of Arts & Sciences",20,0.49,26.2,524
+"26","Creative Writing",201902,"College of Arts & Sciences",22,0.49,19.1363636363636,421
+"27","E Asian Languages & Literature",201901,"College of Arts & Sciences",70,0.49,19.2,1344
+"28","E Asian Languages & Literature",201902,"College of Arts & Sciences",62,0.4,17.2741935483871,1071
+"29","Earth Sciences",201901,"College of Arts & Sciences",44,0.49,30.8863636363636,1359
+"30","Earth Sciences",201902,"College of Arts & Sciences",43,0.49,37,1591
+"31","Economics",201901,"College of Arts & Sciences",64,0.49,59.421875,3803
+"32","Economics",201902,"College of Arts & Sciences",61,0.49,92.8688524590164,5665
+"33","Education Studies",201901,"College of Education",47,0.49,34.7659574468085,1634
+"34","Education Studies",201902,"College of Education",42,0.49,53.8571428571429,2262
+"35","Educational Methodology, Policy, & Leadership",201901,"College of Education",33,0.49,23.5151515151515,776
+"36","Educational Methodology, Policy, & Leadership",201902,"College of Education",26,0.49,24.4615384615385,636
+"37","English",201901,"College of Arts & Sciences",162,0.49,37.3950617283951,6058
+"38","English",201902,"College of Arts & Sciences",179,0.49,37.3631284916201,6688
+"39","Environmental Studies",201901,"College of Arts & Sciences",25,0.45,34.56,864
+"40","Environmental Studies",201902,"College of Arts & Sciences",28,0.45,33.8214285714286,947
+"41","Folklore",201901,"College of Arts & Sciences",8,0.49,12.375,99
+"42","Folklore",201902,"College of Arts & Sciences",10,0.49,30.5,305
+"43","Geography",201901,"College of Arts & Sciences",35,0.45,22.2857142857143,780
+"44","Geography",201902,"College of Arts & Sciences",35,0.4,16.5714285714286,580
+"45","History",201901,"College of Arts & Sciences",56,0.49,31.3035714285714,1753
+"46","History",201902,"College of Arts & Sciences",38,0.4,31.7105263157895,1205
+"47","Human Physiology",201901,"College of Arts & Sciences",42,0.49,16.3571428571429,687
+"48","Human Physiology",201902,"College of Arts & Sciences",38,0.49,20.9736842105263,797
+"49","Interior Architecture",201901,"College of Design",17,0.4,27.5294117647059,468
+"50","Interior Architecture",201902,"College of Design",13,0.3,22.6923076923077,295
+"51","International Studies",201901,"College of Arts & Sciences",26,0.4,26.3076923076923,684
+"52","International Studies",201902,"College of Arts & Sciences",26,0.4,17.5384615384615,456
+"53","Journalism",201901,"School of Journalism & Communication",147,0.4,62.3197278911565,9161
+"54","Journalism",201902,"School of Journalism & Communication",143,0.4,64.9300699300699,9285
+"55","Landscape Architecture",201901,"College of Design",35,0.2,20.3428571428571,712
+"56","Landscape Architecture",201902,"College of Design",45,0.2,20.2,909
+"57","Law",201901,"School of Law",102,0.3,65.6078431372549,6692
+"58","Law",201902,"School of Law",118,0.3,54.8559322033898,6473
+"59","Linguistics",201901,"College of Arts & Sciences",51,0.4,20.1372549019608,1027
+"60","Linguistics",201902,"College of Arts & Sciences",52,0.49,24.8461538461538,1292
+"61","Mathematics",201901,"College of Arts & Sciences",132,0.49,67.3257575757576,8887
+"62","Mathematics",201902,"College of Arts & Sciences",136,0.49,50.3529411764706,6848
+"63","Music",201901,"School of Music & Dance",394,0.46,15.7741116751269,6215
+"64","Music",201902,"School of Music & Dance",375,0.46,16.2453333333333,6092
+"65","Philosophy",201901,"College of Arts & Sciences",35,0.4,41.7142857142857,1460
+"66","Philosophy",201902,"College of Arts & Sciences",38,0.4,43.6315789473684,1658
+"67","Physics",201901,"College of Arts & Sciences",65,0.4,56.5076923076923,3673
+"68","Physics",201902,"College of Arts & Sciences",56,0.4,47.9285714285714,2684
+"69","Political Science",201901,"College of Arts & Sciences",40,0.4,32.275,1291
+"70","Political Science",201902,"College of Arts & Sciences",42,0.4,25.2142857142857,1059
+"71","Product Design",201902,"College of Design",16,0.49,37,592
+"72","Psychology",201901,"College of Arts & Sciences",76,0.49,42.4078947368421,3223
+"73","Psychology",201902,"College of Arts & Sciences",85,0.49,43.4705882352941,3695
+"74","Romance Languages",201901,"College of Arts & Sciences",139,0.49,25.6330935251799,3563
+"75","Romance Languages",201902,"College of Arts & Sciences",133,0.49,20.5488721804511,2733
+"76","Russian, East European, & Eurasian Studies",201901,"College of Arts & Sciences",15,0.49,10,150
+"77","Russian, East European, & Eurasian Studies",201902,"College of Arts & Sciences",18,0.49,7.94444444444444,143
+"78","Sociology",201901,"College of Arts & Sciences",41,0.4,51.2926829268293,2103
+"79","Sociology",201902,"College of Arts & Sciences",45,0.49,48.6444444444444,2189
+"80","Special Education & Clinical Sciences",201901,"College of Education",78,0.49,31.0897435897436,2425
+"81","Special Education & Clinical Sciences",201902,"College of Education",84,0.49,27.3690476190476,2299
+"82","Theatre Arts",201901,"College of Arts & Sciences",37,0.49,10.4594594594595,387
+"83","Theatre Arts",201902,"College of Arts & Sciences",40,0.49,6.275,251
