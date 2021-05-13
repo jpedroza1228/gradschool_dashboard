@@ -31,7 +31,7 @@ University of Oregon
 
 Inputs {.sidebar}
 -----------------------------------------------------------------------
-This dashboard is for those in the Graduate School that are interested in the average teaching graduate employment (GE) full-time equivalency (FTE), distribution of various types of GE opportunities across the University of Oregon (UO), and the correlations between GE teaching FTE and student credit hours for the 2018-2019 academic year. 
+This dashboard is for those in the Graduate School that are interested in departments allocation of teaching graduate employments (GEs) and undergraduate student credit hours.
 
 Summarized data can be found [here](https://github.com/jpedroza1228/gradschool_dashboard/tree/main/pushable_data)
 Synthetic data can be found [here](https://github.com/jpedroza1228/gradschool_dashboard/tree/main/synthetic_data/synthetic_csv)
