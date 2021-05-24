@@ -97,7 +97,7 @@ Column {data-width=600}
 uo %>% 
   filter(ge_teach == 1) %>% 
   group_by(course_dept) %>%
-  mutate(mean_fte = mean(ge_teach_fte),
+  mutate(mean_fte = mean(ge_teach_fte, na.rm = TRUE), #Law was NA without this argument
          mean_fte = round(mean_fte, digits = 3),
          ge_teach_n = n(),
          college = recode(college, 'School of Music & Dance' = 'SOMD',
@@ -106,7 +106,7 @@ uo %>%
                           'Lundquist College of Business' = 'LCOB',
                           'College of Education' = 'COE',
                           'College of Design' = 'COD',
-                          'College of Arts & Sciences' = 'CAS')) %>%
+                          'College of Arts & Sciences' = 'CAS')) %>% 
   ungroup() %>%
   ggplot(aes(fct_reorder(course_dept, mean_fte), mean_fte)) +
   geom_col(position = 'dodge', aes(fill = college)) +
@@ -138,7 +138,7 @@ stu <- c('Doctoral' = '#669b3e', 'Law' = '#398b98', 'Masters' = '#ea5227')
 
 uo %>%
   filter(ge == 1) %>% 
-  pivot_longer(cols = c(8, 10, 12),
+  pivot_longer(cols = c(8, 10, 12), # Consider using column names to prevent unintended outcomes c(ge_teach_fte, ge_rsch_fte, ge_admin_fte)
                names_to = 'fte_ge',
                values_to = 'amount_fte') %>% 
   mutate(college = recode(college, 'School of Music & Dance' = 'SOMD',
@@ -152,6 +152,7 @@ uo %>%
                          'ge_rsch_fte' = 'Research GE',
                          'ge_teach_fte' = 'Teaching GE')) %>% 
   drop_na(college, student_level) %>% 
+# filter(amount_fte > 0) %>% not sure if you need to filter out 0.0 FTE
   ggplot(aes(x = amount_fte, y = college, fill = student_level)) +
   geom_density_ridges(alpha = .3, color = 'gray70', scale = .8) +
   facet_wrap(~fte_ge, ncol = 3) +
@@ -186,7 +187,7 @@ cas_p_static <- uo %>%
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
   geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1) +
+#  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1) + #I would consider removing these throughout
   theme(legend.position = 'none') +
   scale_color_manual(values = c('#5e2228', '#d22a2c', '#9b2a30', '#c80010',
                      '#6a1f25', '#d72d2b', '#5b2c2f', '#387448',
@@ -211,7 +212,7 @@ cas_p <- uo %>%
            ge_teach_fte < .5) %>% 
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
-  # geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
+#  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
   geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1) +
   theme(legend.position = 'none') +
   scale_color_manual(values = c('#5e2228', '#d22a2c', '#9b2a30', '#c80010',
@@ -253,7 +254,7 @@ cod1 <- uo %>%
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
   geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
+#  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) + 
   scale_colour_manual(name = "course_dept",values = cod_major) +
   xlim(0.0, .5) +
   labs(x = 'GE Teaching FTE',
@@ -267,7 +268,7 @@ cod2 <- uo %>%
            ge_teach_fte < .5) %>%
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
-  # geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
+#  geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
   geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
   scale_colour_manual(name = "course_dept",values = cod_major) +
   xlim(0.0, .5)  +
@@ -297,7 +298,7 @@ coe1 <- uo %>%
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
   geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
+#  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
   scale_color_manual(values = coe_major) +
   xlim(0.0, .5) +
   labs(x = 'GE Teaching FTE',
@@ -337,7 +338,7 @@ uo %>%
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
   geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
+#  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE, size = 1.25) +
   xlim(0.0, .5) +
   scale_color_manual(values = c('#398b98')) +
   # annotate('text', x = .2, y = 130, label = 'Business Administration') +
@@ -359,7 +360,7 @@ uo %>%
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
   geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
+#  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
   labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
        subtitle = 'for Journalism',
        x = 'GE Teaching FTE',
@@ -379,7 +380,7 @@ uo %>%
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
   geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
+#  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
   labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
        subtitle = 'for Law',
        x = 'GE Teaching FTE',
@@ -399,7 +400,7 @@ uo %>%
   drop_na(ge_teach_fte, credit) %>% 
   ggplot(aes(ge_teach_fte, credit)) +
   geom_jitter(aes(color = as.factor(course_dept)), alpha = .1) +
-  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
+#  geom_smooth(aes(color = as.factor(course_dept)), method = 'lm', se = FALSE) +
   labs(title = 'Association between GE Teaching FTE\nand Undergraduate Credit Hours',
        subtitle = 'for Music',
        x = 'GE Teaching FTE',
@@ -432,7 +433,7 @@ uo %>%
   ungroup() %>% 
   dplyr::select(College, `Course Department`, `GE Teaching Observations`, `Average GE Teaching FTE`,
                 `Average Student Class FTE`, `Average Student Credit Hours`) %>% 
-  reactable::reactable()
+  reactable::reactable(filterable = TRUE)
 
 ```
 
@@ -475,5 +476,5 @@ uo_lm_list %>%
   dplyr::select(
     # -ge_teach_fte_b, 
     -lm_pvalue, -betas) %>% 
-  reactable::reactable()
+  reactable::reactable(filterable = TRUE)
 ```
