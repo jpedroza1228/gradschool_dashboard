@@ -59,7 +59,7 @@ FTE = Full-time Equivalency\n
 UO = University of Oregon\n
 
 
-Column {data-width=1000}
+Column {.tabset}
 -----------------------------------------------------------------------
 
 ### Number of Teaching GEs Across UO Departments
@@ -112,12 +112,6 @@ uo %>%
         axis.text.y = element_text(size = 6))
 
 ```
-
-Findings
-=======================================================================
-
-Column {.tabset}
------------------------------------------------------------------------
 
 ### Undergraduate Course Credits Across Departments
 
@@ -188,6 +182,9 @@ dept_year_plot_ge <- ggplotly(dept_year_ge) %>%
 
 dept_year_plot_ge
 ```
+
+Findings
+=======================================================================
 
 Column {.tabset}
 -----------------------------------------------------------------------
