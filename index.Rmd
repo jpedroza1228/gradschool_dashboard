@@ -231,8 +231,6 @@ uo %>%
   ggplot(aes(teach_ge_fte, mean_credit)) +
   geom_jitter(aes(color = as.factor(full_term))) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
-  stat_regline_equation() +
-  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
   labs(title = "Scatterplot of Teaching GEs' FTE\nand Average Undergraduate Course Credit",
        x = "GE Teaching FTE",
        y = "Average Course Credits") +
@@ -280,8 +278,6 @@ uo %>%
   ggplot(aes(teach_ge_fte, mean_credit)) +
   geom_jitter(aes(color = as.factor(full_term))) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
-  stat_regline_equation() +
-  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
   labs(title = "Scatterplot of Teaching GEs' FTE\nand Average Undergraduate Course Credit",
        x = "GE Teaching FTE",
        y = "Average Course Credits") +
@@ -329,8 +325,6 @@ uo %>%
   ggplot(aes(teach_ge_fte, mean_credit)) +
   geom_jitter(aes(color = as.factor(full_term))) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
-  stat_regline_equation() +
-  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
   labs(title = "Scatterplot of Teaching GEs' FTE\nand Average Undergraduate Course Credit",
        x = "GE Teaching FTE",
        y = "Average Course Credits") +
@@ -378,8 +372,6 @@ uo %>%
   ggplot(aes(teach_ge_fte, mean_credit)) +
   geom_jitter(aes(color = as.factor(full_term))) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
-  stat_regline_equation() +
-  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
   labs(title = "Scatterplot of Teaching GEs' FTE\nand Average Undergraduate Course Credit",
        x = "GE Teaching FTE",
        y = "Average Course Credits") +
@@ -427,8 +419,6 @@ uo %>%
   ggplot(aes(teach_ge_fte, mean_credit)) +
   geom_jitter(aes(color = as.factor(full_term))) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
-  stat_regline_equation() +
-  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
   labs(title = "Scatterplot of Teaching GEs' FTE\nand Average Undergraduate Course Credit",
        x = "GE Teaching FTE",
        y = "Average Course Credits") +
@@ -476,8 +466,6 @@ uo %>%
   ggplot(aes(teach_ge_fte, mean_credit)) +
   geom_jitter(aes(color = as.factor(full_term))) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
-  stat_regline_equation() +
-  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
   labs(title = "Scatterplot of Teaching GEs' FTE\nand Average Undergraduate Course Credit",
        x = "GE Teaching FTE",
        y = "Average Course Credits") +
@@ -525,8 +513,6 @@ uo %>%
   ggplot(aes(teach_ge_n, mean_credit)) +
   geom_jitter(aes(color = as.factor(full_term))) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
-  stat_regline_equation() +
-  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
   labs(title = "Scatterplot of Number of Teaching GEs\nand Average Undergraduate Course Credit",
        x = "Number of Teaching GEs",
        y = "Average Course Credits") +
@@ -574,8 +560,6 @@ uo %>%
   ggplot(aes(teach_ge_n, mean_credit)) +
   geom_jitter(aes(color = as.factor(full_term))) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
-  stat_regline_equation() +
-  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
   labs(title = "Scatterplot of Number of Teaching GEs\nand Average Undergraduate Course Credit",
        x = "Number of Teaching GEs",
        y = "Average Course Credits") +
@@ -623,8 +607,6 @@ uo %>%
   ggplot(aes(teach_ge_n, mean_credit)) +
   geom_jitter(aes(color = as.factor(full_term))) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
-  stat_regline_equation() +
-  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
   labs(title = "Scatterplot of Number of Teaching GEs\nand Average Undergraduate Course Credit",
        x = "Number of Teaching GEs",
        y = "Average Course Credits") +
@@ -672,8 +654,6 @@ uo %>%
   ggplot(aes(teach_ge_n, mean_credit)) +
   geom_jitter(aes(color = as.factor(full_term))) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
-  stat_regline_equation() +
-  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
   labs(title = "Scatterplot of Number of Teaching GEs\nand Average Undergraduate Course Credit",
        x = "Number of Teaching GEs",
        y = "Average Course Credits") +
@@ -721,8 +701,6 @@ uo %>%
   ggplot(aes(teach_ge_n, mean_credit)) +
   geom_jitter(aes(color = as.factor(full_term))) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
-  stat_regline_equation() +
-  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
   labs(title = "Scatterplot of Number of Teaching GEs\nand Average Undergraduate Course Credit",
        x = "Number of Teaching GEs",
        y = "Average Course Credits") +
@@ -770,8 +748,6 @@ uo %>%
   ggplot(aes(teach_ge_n, mean_credit)) +
   geom_jitter(aes(color = as.factor(full_term))) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
-  stat_regline_equation() +
-  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
   labs(title = "Scatterplot of Number of Teaching GEs\nand Average Undergraduate Course Credit",
        x = "Number of Teaching GEs",
        y = "Average Course Credits") +
@@ -836,7 +812,6 @@ uo %>%
   ggplot(aes(teach_ge_fte, mean_credit)) +
   geom_jitter(aes(color = as.factor(full_term))) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
-  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
   labs(title = "Scatterplot of Teaching GEs' FTE\nand Average Undergraduate Course Credit",
        x = "GE Teaching FTE",
        y = "Average Course Credits") +
@@ -883,7 +858,6 @@ uo %>%
   ggplot(aes(teach_ge_n, mean_credit)) +
   geom_jitter(aes(color = as.factor(full_term))) +
   geom_smooth(method = "lm", se = FALSE, color = "black", size = 1.25) +
-  # scale_color_manual(values = c("#6a1f25", "#387448", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47")) +
   labs(title = "Scatterplot of Number of Teaching GEs\nand Average Undergraduate Course Credit",
        x = "Number of Teaching GEs",
        y = "Average Course Credits") +
