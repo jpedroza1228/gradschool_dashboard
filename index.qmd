@@ -1,0 +1,717 @@
+---
+title: "University of Oregon Graduate School Dashboard"
+format:
+  dashboard:
+     theme: default
+     orientation: rows
+     nav-buttons:
+      - icon: github
+        href: https://github.com/jpedroza1228/gradschool_dashboard
+---
+
+```{r}
+library(tidyverse)
+library(plotly)
+library(ggpubr)
+
+theme_set(theme_classic())
+
+uo_years <- function(year){
+  
+  link <- glue::glue("https://raw.githubusercontent.com/jpedroza1228/gradschool_dashboard/main/pushable_data/grouped_data_{year}.csv")
+  
+  rio::import(link, setclass = 'tibble')
+  
+}
+
+uo <- map_df(14:19, ~uo_years(.x))
+```
+
+# EDA
+
+## {.sidebar}
+
+<div style="height: 20px;"></div>
+
+This dashboard is for those in the Graduate School that are interested in departments allocation of teaching graduate employments (GEs) and undergraduate student credit hours.
+
+Summarized data can be found [here](https://github.com/jpedroza1228/gradschool_dashboard/tree/main/pushable_data)
+Synthetic data can be found [here](https://github.com/jpedroza1228/gradschool_dashboard/tree/main/synthetic_data/synthetic_csv)
+
+**Common terms used in all visuals and tables**\n
+
+CAS = College of Arts & Sciences\n
+
+COD = College of Design\n
+
+COE = College of Education\n
+
+LCOB = Lundquist College of Business\n
+
+SOJC = School of Journalism & Communication\n
+
+LAW = Law School\n
+
+SOMD = School of Music & Dance\n
+
+GE = Graduate Employment\n
+
+FTE = Full-time Equivalency\n
+
+UO = University of Oregon\n
+
+
+## Row {.fill}
+
+```{r}
+#| title: Number of Teaching GEs Across UO Departments
+
+uo |> 
+  mutate(term = full_term) |> 
+  separate(col = term, into = c("remove", "year", "actual_term"), sep = "0") |> 
+  group_by(year, college, course_dept) |> 
+  mutate(sum_teach_ge = sum(teach_ge_n),
+         year = recode(year, "14" = "2014",
+                       "15" = "2015",
+                       "16" = "2016",
+                       "17" = "2017",
+                       "18" = "2018", 
+                       "19" = "2019"),
+         college = recode(college, 'School of Music & Dance' = 'SOMD',
+                          'School of Law' = 'LAW',
+                          'School of Journalism & Communication' = 'SOJC',
+                          'Lundquist College of Business' = 'LCOB',
+                          'College of Education' = 'COE',
+                          'College of Design' = 'COD',
+                          'College of Arts & Sciences' = 'CAS')) |> 
+  ungroup() |> 
+  ggplot(aes(fct_reorder(as.factor(course_dept), college), sum_teach_ge)) +
+  geom_point(aes(color = year)) +
+  # geom_col(position = 'dodge', aes(fill = college), color = "White") +
+  # facet_grid(cols = vars(year)) +
+  coord_flip() +
+  scale_y_continuous(limits = c(0, 1200),
+                     expand = c(0, 0)) +
+  scale_color_manual(values = c("#6a1f25", "#7fb7b7", "#669b3e", "#ddca72", "#7f5d47", "#F7471A")) +
+  labs(title = "Number of Teaching GEs\nAcross UO Departments",
+       x = "",
+       y = "Number of GEs") +
+  annotate("text", x = 20, y = 1000, label = "2014",
+           color = "#6a1f25", size = 4) +
+    annotate("text", x = 18, y = 1000, label = "2015",
+           color = "#7fb7b7", size = 4) +
+    annotate("text", x = 16, y = 1000, label = "2016",
+           color = "#669b3e", size = 4) +
+    annotate("text", x = 14, y = 1000, label = "2017",
+           color = "#ddca72", size = 4) +
+    annotate("text", x = 12, y = 1000, label = "2018",
+           color = "#7f5d47", size = 4) +
+    annotate("text", x = 10, y = 1000, label = "2019",
+           color = "#F7471A", size = 4) +
+  theme(legend.position = "none",
+        legend.title = element_blank(),
+        axis.text.y = element_text(size = 6))
+
+```
+
+```{r}
+#| title: Undergraduate Course Credits Across Departments
+
+dept_year <- uo |> 
+  mutate(term = full_term) |> 
+  separate(col = term, into = c('remove', 'year', 'actual_term'), sep = '0') |> 
+              ggplot(aes(as.factor(full_term), mean_credit)) +
+              geom_line(aes(color = course_dept, group = course_dept)) +
+              geom_point(alpha = .5, aes(color = course_dept)) +
+              scale_x_discrete(breaks = c(201401, 201402, 201403,
+                                          201501, 201502, 201503,
+                                          201601, 201602, 201603,
+                                          201701, 201702, 201703,
+                                          201801, 201802, 201803,
+                                          201901, 201902, 201903),
+                               label = c("F14", "W14", "S14",
+                                         "F15", "W15", "S15",
+                                         "F16", "W16", "S16",
+                                         "F17", "W17", "S17",
+                                         "F18", "W18", "S18",
+                                         "F19", "W19", "S19"))  +
+  labs(title = "Undergraduate Course Credits Over Time",
+       subtitle = "Click on the department in the legend to view one department",
+       x = "Academic Term",
+       y = "Average Undergraduate Credit Hours") +
+  theme(legend.title = element_blank())
+
+dept_year_plot <- ggplotly(dept_year) |> 
+  partial_bundle() |> 
+  toWebGL()
+
+dept_year_plot
+
+```
+
+```{r}
+#| title: Teaching GE Allocation Across Departments
+
+dept_year_ge <- uo |> 
+  mutate(term = full_term) |> 
+  separate(col = term, into = c('remove', 'year', 'actual_term'), sep = '0') |> 
+  ggplot(aes(as.factor(full_term), teach_ge_n)) +
+  geom_line(aes(color = course_dept, group = course_dept)) +
+  geom_point(alpha = .5, aes(color = course_dept)) +
+  scale_x_discrete(breaks = c(201401, 201402, 201403,
+                              201501, 201502, 201503,
+                              201601, 201602, 201603,
+                              201701, 201702, 201703,
+                              201801, 201802, 201803,
+                              201901, 201902, 201903),
+                   label = c("F14", "W14", "S14",
+                             "F15", "W15", "S15",
+                             "F16", "W16", "S16",
+                             "F17", "W17", "S17",
+                             "F18", "W18", "S18",
+                             "F19", "W19", "S19")) +
+  labs(title = "Teaching GE Allocation Over Time",
+       subtitle = "Click on the department in the legend to view one department",
+       x = "Academic Term",
+       y = "Number of Teaching GEs For Each Department") +
+  theme(legend.title = element_blank())
+
+dept_year_plot_ge <- ggplotly(dept_year_ge) |> 
+  partial_bundle() |> 
+  toWebGL()
+
+dept_year_plot_ge
+```
+
+# Findings
+
+## Row {height=45%}
+
+```{r}
+sub <- uo |> 
+  group_by(college) |> 
+  mutate(n_per = n(),
+    term = case_when(
+      full_term == 201401 ~ 1,
+      full_term == 201402 ~ 2,
+      full_term == 201403 ~ 3,
+      full_term == 201501 ~ 4,
+      full_term == 201502 ~ 5,
+      full_term == 201503 ~ 6,
+      full_term == 201601 ~ 7,
+      full_term == 201602 ~ 8,
+      full_term == 201603 ~ 9,
+      full_term == 201701 ~ 10,
+      full_term == 201702 ~ 11,
+      full_term == 201703 ~ 12,
+      full_term == 201801 ~ 13,
+      full_term == 201802 ~ 14,
+      full_term == 201803 ~ 15,
+      full_term == 201901 ~ 16,
+      full_term == 201902 ~ 17
+    )
+  )
+
+sub_add <- 
+  sub |> 
+  group_by(college) |> 
+  summarize(n = n()) |> 
+  ungroup() |> 
+  count(college)
+
+sub <- left_join(sub, sub_add, by = 'college')
+
+sub <- 
+  sub |> 
+  group_by(college) |>
+  mutate(one_college = !duplicated(n))
+
+sub <- sub |> 
+  mutate(one_college = ifelse(one_college == "TRUE", 1, 0))
+
+library(sjPlot)
+library(lme4)
+library(lmerTest)
+
+intercept_model <- lmer(mean_credit ~ term + (1 | college) + (1 | college:course_dept), data = sub)
+ge_n_model <- lmer(mean_credit ~ term + teach_ge_n + (1 | college) + (1 | college:course_dept), data = sub)
+ge_fte_model <- lmer(mean_credit ~ term + teach_ge_fte + (1 | college) + (1 | college:course_dept), data = sub)
+
+tab_model(intercept_model, ge_n_model, ge_fte_model)
+
+```
+
+## Row {height=55%}
+
+```{r}
+#| title: Random Intercept Model
+
+sub$intercept_pred <- predict(intercept_model, newdata = sub)
+
+rand_intercept_mod <- sub |> 
+  ggplot(
+    aes(
+      term,
+      intercept_pred
+      )
+  ) +
+  # geom_point(
+  #   color = 'gray70',
+  #   alpha = .3
+  #   ) +
+  geom_smooth(
+    se = FALSE,
+    method = 'lm',
+    aes(
+      color = as.factor(course_dept)
+    )
+  ) +
+  # facet_wrap(
+  #   vars(
+  #     college
+  #   )
+  # ) +
+  theme_minimal() +
+  # theme(
+  #   legend.position = "none"
+  # ) +
+  NULL
+
+rand_intercept_mod <- ggplotly(rand_intercept_mod) |> 
+  partial_bundle() |> 
+  toWebGL()
+
+rand_intercept_mod
+```
+
+# Random Effects
+
+## Row {.tabset} 
+
+```{r}
+#| title: Differences in Average Credits Across Colleges (Only Term)
+
+intercept_rand <- ranef(intercept_model, condVar = TRUE)
+
+intercept_rand <- as_tibble(intercept_rand)
+
+intercept_college <-
+  intercept_rand |> 
+  filter(
+    grpvar == "college"
+  ) |> 
+  ggplot(
+    aes(
+      fct_reorder(
+        grp,
+        condval
+      ),
+      condval
+      )
+  ) +
+  geom_errorbar(
+    aes(
+      ymin = condval + qnorm(0.025)*condsd,
+      ymax = condval + qnorm(0.975)*condsd
+      )
+  ) +
+  geom_point(
+    aes(
+      color = grp
+    ),
+    size = 4
+  ) +
+  coord_flip() +
+  labs(
+    x = "",
+    y = "Differences in Average Credits",
+    title = "Variation in Average Number of Credits Across Colleges"
+  ) +
+  theme(legend.position = 'none')
+
+# intercept_college_plot <- ggplotly(intercept_college) |> 
+#   partial_bundle() |> 
+#   toWebGL()
+
+intercept_dept <- 
+  intercept_rand |> 
+  filter(
+    grpvar == "college:course_dept"
+  ) |> 
+  separate(
+  grp,
+  into = c("college", "dept"),
+  sep = ":"
+  ) |> 
+  ggplot(
+    aes(
+    fct_reorder(
+      dept,
+      condval
+    ),
+    condval
+    )
+  ) +
+  geom_errorbar(
+    aes(
+      ymin = condval + qnorm(0.025)*condsd,
+      ymax = condval + qnorm(0.975)*condsd
+      )
+  ) +
+  geom_point(
+    aes(
+      color = college
+    ),
+    size = 2
+  ) +
+  coord_flip() +
+  see::scale_color_okabeito() +
+  labs(
+    x = "",
+    y = "Differences in Average Credits",
+    title = "Variation in Average Number of Credits Across Colleges"
+  ) +
+  theme(legend.position = 'none')
+
+# intercept_dept_plot <- ggplotly(intercept_dept) |> 
+#   partial_bundle() |> 
+#   toWebGL()
+
+intercept_college
+# intercept_college_plot
+```
+
+```{r}
+#| title: Differences in Average Credits Across Departments in Colleges (Only Term)
+
+intercept_dept
+# intercept_dept_plot
+```
+
+```{r}
+#| title: Differences in Average Credits Across Colleges (Number of GE)
+
+n_rand <- ranef(ge_n_model, condVar = TRUE)
+
+n_rand <- as_tibble(n_rand)
+
+n_college <-
+  n_rand |> 
+  filter(
+    grpvar == "college"
+  ) |> 
+  ggplot(
+    aes(
+      fct_reorder(
+        grp,
+        condval
+      ),
+      condval
+      )
+  ) +
+  geom_errorbar(
+    aes(
+      ymin = condval + qnorm(0.025)*condsd,
+      ymax = condval + qnorm(0.975)*condsd
+      )
+  ) +
+  geom_point(
+    aes(
+      color = grp
+    ),
+    size = 4
+  ) +
+  coord_flip() +
+  labs(
+    x = "",
+    y = "Differences in Average Credits",
+    title = "Variation in Average Number of Credits Across Colleges"
+  ) +
+  theme(legend.position = 'none')
+
+# n_college_plot <- ggplotly(n_college) |> 
+#   partial_bundle() |> 
+#   toWebGL()
+
+n_dept <- 
+  n_rand |> 
+  filter(
+    grpvar == "college:course_dept"
+  ) |> 
+  separate(
+  grp,
+  into = c("college", "dept"),
+  sep = ":"
+  ) |> 
+  ggplot(
+    aes(
+    fct_reorder(
+      dept,
+      condval
+    ),
+    condval
+    )
+  ) +
+  geom_errorbar(
+    aes(
+      ymin = condval + qnorm(0.025)*condsd,
+      ymax = condval + qnorm(0.975)*condsd
+      )
+  ) +
+  geom_point(
+    aes(
+      color = college
+    ),
+    size = 2
+  ) +
+  coord_flip() +
+  see::scale_color_okabeito() +
+  labs(
+    x = "",
+    y = "Differences in Average Credits",
+    title = "Variation in Average Number of Credits Across Colleges"
+  ) +
+  theme(legend.position = 'none')
+
+# n_dept_plot <- ggplotly(n_dept) |> 
+#   partial_bundle() |> 
+#   toWebGL()
+
+n_college
+# n_college_plot
+```
+
+```{r}
+#| title: Differences in Average Credits Across Departments in Colleges (Number of GE)
+
+n_dept
+# n_dept_plot
+```
+
+```{r}
+#| title: Differences in Average Credits Across Colleges (Amount of FTE)
+
+fte_rand <- ranef(ge_fte_model, condVar = TRUE)
+
+fte_rand <- as_tibble(fte_rand)
+
+fte_college <-
+  fte_rand |> 
+  filter(
+    grpvar == "college"
+  ) |> 
+  ggplot(
+    aes(
+      fct_reorder(
+        grp,
+        condval
+      ),
+      condval
+      )
+  ) +
+  geom_errorbar(
+    aes(
+      ymin = condval + qnorm(0.025)*condsd,
+      ymax = condval + qnorm(0.975)*condsd
+      )
+  ) +
+  geom_point(
+    aes(
+      color = grp
+    ),
+    size = 4
+  ) +
+  coord_flip() +
+  labs(
+    x = "",
+    y = "Differences in Average Credits",
+    title = "Variation in Average Number of Credits Across Colleges"
+  ) +
+  theme(legend.position = 'none')
+
+# fte_college_plot <- ggplotly(fte_college) |> 
+#   partial_bundle() |> 
+#   toWebGL()
+
+fte_dept <- 
+  fte_rand |> 
+  filter(
+    grpvar == "college:course_dept"
+  ) |> 
+  separate(
+  grp,
+  into = c("college", "dept"),
+  sep = ":"
+  ) |> 
+  ggplot(
+    aes(
+    fct_reorder(
+      dept,
+      condval
+    ),
+    condval
+    )
+  ) +
+  geom_errorbar(
+    aes(
+      ymin = condval + qnorm(0.025)*condsd,
+      ymax = condval + qnorm(0.975)*condsd
+      )
+  ) +
+  geom_point(
+    aes(
+      color = college
+    ),
+    size = 2
+  ) +
+  coord_flip() +
+  see::scale_color_okabeito() +
+  labs(
+    x = "",
+    y = "Differences in Average Credits",
+    title = "Variation in Average Number of Credits Across Colleges"
+  ) +
+  theme(legend.position = 'none')
+
+# fte_dept_plot <- ggplotly(fte_dept) |> 
+#   partial_bundle() |> 
+#   toWebGL()
+
+fte_college
+# fte_college_plot
+```
+
+```{r}
+#| title: Differences in Average Credits Across Departments in Colleges (Amount of FTE)
+
+fte_dept
+# fte_dept_plot
+```
+
+
+```{r}
+#| echo: false
+#| eval: false
+#| title: Term As Sole Predictor
+
+# predictions
+sub$intercept_pred <- predict(intercept_model, newdata = sub)
+sub$ge_n_pred <- predict(ge_n_model, newdata = sub)
+sub$ge_fte_pred <- predict(ge_fte_model, newdata = sub)
+
+rand_intercept_mod <- sub |> 
+  ggplot(
+    aes(
+      term,
+      intercept_pred
+      )
+  ) +
+  # geom_point(
+  #   color = 'gray70',
+  #   alpha = .3
+  #   ) +
+  geom_smooth(
+    se = FALSE,
+    method = 'lm',
+    aes(
+      color = as.factor(course_dept)
+    )
+  ) +
+  # facet_wrap(
+  #   vars(
+  #     college
+  #   )
+  # ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none"
+  )
+
+rand_intercept_mod <- ggplotly(rand_intercept_mod) |> 
+  partial_bundle() |> 
+  toWebGL()
+
+rand_intercept_mod
+```
+
+```{r}
+#| echo: false
+#| eval: false
+#| title: Number of GEs & Mean Credit
+
+rand_intercept_n_mod <- sub |> 
+  ggplot(
+    aes(
+      teach_ge_n,
+      ge_n_pred
+      )
+  ) +
+  # geom_point(
+  #   color = 'gray70',
+  #   alpha = .3
+  #   ) +
+  geom_smooth(
+    se = FALSE,
+    method = 'lm',
+    aes(
+      color = as.factor(course_dept)
+    ),
+    alpha = .7
+  ) +
+  # facet_wrap(
+  #   vars(
+  #     college
+  #   )
+  # ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none"
+  )
+
+rand_intercept_n_mod <- ggplotly(rand_intercept_n_mod) |> 
+  partial_bundle() |> 
+  toWebGL()
+
+rand_intercept_n_mod
+```
+
+```{r}
+#| echo: false
+#| eval: false
+#| title: Amount of FTE & Mean Credit
+
+rand_intercept_fte_mod <- sub |> 
+  ggplot(
+    aes(
+      teach_ge_fte,
+      ge_fte_pred
+      )
+  ) +
+  # geom_point(
+  #   color = 'gray70',
+  #   alpha = .3
+  #   ) +
+  geom_smooth(
+    se = FALSE,
+    method = 'lm',
+    aes(
+      color = as.factor(course_dept)
+    ),
+    alpha = .7
+  ) +
+  # facet_wrap(
+  #   vars(
+  #     college
+  #   )
+  # ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none"
+  )
+
+rand_intercept_fte_mod <- ggplotly(rand_intercept_fte_mod) |> 
+  partial_bundle() |> 
+  toWebGL()
+
+rand_intercept_fte_mod
+```
