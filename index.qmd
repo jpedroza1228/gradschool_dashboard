@@ -241,24 +241,44 @@ tab_model(intercept_model, ge_n_model, ge_fte_model)
 
 ```
 
-## Row {height=55%}
+## Row  {.tabset height=55%}
 
 ```{r}
-#| title: Random Intercept Model
+#| title: Term As Sole Predictor
 
-sub$intercept_pred <- predict(intercept_model, newdata = sub)
+# predictions
+intercept_data <- 
+  expand_grid(
+  term = c(18:33),
+  college = sub$college |> unique(),
+  course_dept = sub$course_dept |> unique()
+) |> 
+   mutate(
+     college2 = college,
+     course_dept2 = course_dept
+   ) |> 
+   unite(
+     col = "college:course_dept",
+     c(college2, course_dept2),
+     sep = ":"
+   ) |> 
+    mutate(
+      across(
+        -term,
+        ~as.factor(.x)
+      )
+    )
 
-rand_intercept_mod <- sub |> 
+intercept_data$mean_credit <- predict(intercept_model, newdata = intercept_data, allow.new.levels = TRUE)
+
+rand_intercept_mod <- 
+  intercept_data |> 
   ggplot(
     aes(
       term,
-      intercept_pred
+      mean_credit
       )
   ) +
-  # geom_point(
-  #   color = 'gray70',
-  #   alpha = .3
-  #   ) +
   geom_smooth(
     se = FALSE,
     method = 'lm',
@@ -266,22 +286,133 @@ rand_intercept_mod <- sub |>
       color = as.factor(course_dept)
     )
   ) +
-  # facet_wrap(
-  #   vars(
-  #     college
-  #   )
-  # ) +
   theme_minimal() +
-  # theme(
-  #   legend.position = "none"
-  # ) +
-  NULL
+  theme(
+    legend.position = "none"
+  )
 
 rand_intercept_mod <- ggplotly(rand_intercept_mod) |> 
   partial_bundle() |> 
   toWebGL()
 
 rand_intercept_mod
+```
+
+```{r}
+#| title: Number of GEs & Mean Credit
+
+ge_avg_n_data <- 
+  expand_grid(
+  term = c(18:33),
+  college = sub$college |> unique(),
+  course_dept = sub$course_dept |> unique(),
+  teach_ge_n = mean(sub$teach_ge_n)
+) |> 
+   mutate(
+     college2 = college,
+     course_dept2 = course_dept
+   ) |> 
+   unite(
+     col = "college:course_dept",
+     c(college2, course_dept2),
+     sep = ":"
+   ) |> 
+    mutate(
+      across(
+        -c(
+          term,
+          teach_ge_n
+        ),
+        ~as.factor(.x)
+      )
+    )
+
+ge_avg_n_data$mean_credit <- predict(ge_n_model, newdata = ge_avg_n_data, allow.new.levels = TRUE)
+
+rand_intercept_n_mod <- 
+  ge_avg_n_data |> 
+  ggplot(
+    aes(
+      term,
+      mean_credit
+      )
+  ) +
+  geom_smooth(
+    se = FALSE,
+    method = 'lm',
+    aes(
+      color = as.factor(course_dept)
+    ),
+    alpha = .7
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none"
+  )
+
+rand_intercept_n_mod <- ggplotly(rand_intercept_n_mod) |> 
+  partial_bundle() |> 
+  toWebGL()
+
+rand_intercept_n_mod
+```
+
+```{r}
+#| title: Amount of FTE & Mean Credit
+
+ge_fte_data <- 
+  expand_grid(
+  term = c(18:33),
+  college = sub$college |> unique(),
+  course_dept = sub$course_dept |> unique(),
+  teach_ge_fte = c(.49)
+) |> 
+   mutate(
+     college2 = college,
+     course_dept2 = course_dept
+   ) |> 
+   unite(
+     col = "college:course_dept",
+     c(college2, course_dept2),
+     sep = ":"
+   ) |> 
+    mutate(
+      across(
+        -c(
+          term,
+          teach_ge_fte
+        ),
+        ~as.factor(.x)
+      )
+    )
+
+ge_fte_data$mean_credit <- predict(ge_fte_model, newdata = ge_fte_data, allow.new.levels = TRUE)
+
+rand_intercept_fte_mod <- ge_fte_data |> 
+  ggplot(
+    aes(
+      term,
+      mean_credit
+      )
+  ) +
+  geom_smooth(
+    se = FALSE,
+    method = 'lm',
+    aes(
+      color = as.factor(course_dept)
+    ),
+    alpha = .7
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none"
+  )
+
+rand_intercept_fte_mod <- ggplotly(rand_intercept_fte_mod) |> 
+  partial_bundle() |> 
+  toWebGL()
+
+rand_intercept_fte_mod
 ```
 
 # Random Effects
@@ -586,132 +717,4 @@ fte_college
 
 fte_dept
 # fte_dept_plot
-```
-
-
-```{r}
-#| echo: false
-#| eval: false
-#| title: Term As Sole Predictor
-
-# predictions
-sub$intercept_pred <- predict(intercept_model, newdata = sub)
-sub$ge_n_pred <- predict(ge_n_model, newdata = sub)
-sub$ge_fte_pred <- predict(ge_fte_model, newdata = sub)
-
-rand_intercept_mod <- sub |> 
-  ggplot(
-    aes(
-      term,
-      intercept_pred
-      )
-  ) +
-  # geom_point(
-  #   color = 'gray70',
-  #   alpha = .3
-  #   ) +
-  geom_smooth(
-    se = FALSE,
-    method = 'lm',
-    aes(
-      color = as.factor(course_dept)
-    )
-  ) +
-  # facet_wrap(
-  #   vars(
-  #     college
-  #   )
-  # ) +
-  theme_minimal() +
-  theme(
-    legend.position = "none"
-  )
-
-rand_intercept_mod <- ggplotly(rand_intercept_mod) |> 
-  partial_bundle() |> 
-  toWebGL()
-
-rand_intercept_mod
-```
-
-```{r}
-#| echo: false
-#| eval: false
-#| title: Number of GEs & Mean Credit
-
-rand_intercept_n_mod <- sub |> 
-  ggplot(
-    aes(
-      teach_ge_n,
-      ge_n_pred
-      )
-  ) +
-  # geom_point(
-  #   color = 'gray70',
-  #   alpha = .3
-  #   ) +
-  geom_smooth(
-    se = FALSE,
-    method = 'lm',
-    aes(
-      color = as.factor(course_dept)
-    ),
-    alpha = .7
-  ) +
-  # facet_wrap(
-  #   vars(
-  #     college
-  #   )
-  # ) +
-  theme_minimal() +
-  theme(
-    legend.position = "none"
-  )
-
-rand_intercept_n_mod <- ggplotly(rand_intercept_n_mod) |> 
-  partial_bundle() |> 
-  toWebGL()
-
-rand_intercept_n_mod
-```
-
-```{r}
-#| echo: false
-#| eval: false
-#| title: Amount of FTE & Mean Credit
-
-rand_intercept_fte_mod <- sub |> 
-  ggplot(
-    aes(
-      teach_ge_fte,
-      ge_fte_pred
-      )
-  ) +
-  # geom_point(
-  #   color = 'gray70',
-  #   alpha = .3
-  #   ) +
-  geom_smooth(
-    se = FALSE,
-    method = 'lm',
-    aes(
-      color = as.factor(course_dept)
-    ),
-    alpha = .7
-  ) +
-  # facet_wrap(
-  #   vars(
-  #     college
-  #   )
-  # ) +
-  theme_minimal() +
-  theme(
-    legend.position = "none"
-  )
-
-rand_intercept_fte_mod <- ggplotly(rand_intercept_fte_mod) |> 
-  partial_bundle() |> 
-  toWebGL()
-
-rand_intercept_fte_mod
 ```
